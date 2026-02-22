@@ -16,6 +16,7 @@ const config = defineConfig({
           white: { value: '#FFFFFF' },
           0: { value: '#FEFEFE' },
           50: { value: '#F1F1F1' },
+          75: { value: '#EBEBEB' },
           100: { value: '#E8E8E8' },
           150: { value: '#DDDDDD' },
           300: { value: '#D9E1EC' },
@@ -47,6 +48,9 @@ const config = defineConfig({
           scrim: { value: 'rgba(0,0,0,0.5)' },
         },
       },
+      borderWidths: {
+        floating: { value: '2px' },
+      },
       radii: {
         xs: { value: '4px' },
         sm: { value: '5px' },
@@ -73,6 +77,7 @@ const config = defineConfig({
         16: { value: '16px' },
         17: { value: '17px' },
         20: { value: '20px' },
+        21: { value: '21px' },
         27: { value: '27px' },
         24: { value: '24px' },
         30: { value: '30px' },
@@ -82,6 +87,7 @@ const config = defineConfig({
         36: { value: '36px' },
         40: { value: '40px' },
         46: { value: '46px' },
+        47: { value: '47px' },
         130: { value: '130px' },
       },
       sizes: {
@@ -152,6 +158,7 @@ const config = defineConfig({
           surface: { value: '{colors.neutral.50}' },
           field: { value: '{colors.neutral.0}' },
           overlay: { value: '{colors.overlay.scrim}' },
+          mobileFloating: { value: '{colors.neutral.75}' },
         },
         text: {
           primary: { value: '{colors.neutral.900}' },
@@ -246,6 +253,16 @@ const config = defineConfig({
             disabledBg: { value: '{colors.transparent}' },
             disabledFg: { value: '{colors.neutral.900}' },
             disabledBorder: { value: '{colors.neutral.900}' },
+          },
+          floatingOutline: {
+            bg: { value: '{colors.neutral.white}' },
+            fg: { value: '{colors.neutral.900}' },
+            border: { value: '{colors.neutral.900}' },
+            hoverBg: { value: '{colors.neutral.50}' },
+            activeBg: { value: '{colors.neutral.100}' },
+            disabledBg: { value: '{colors.neutral.white}' },
+            disabledFg: { value: '{colors.neutral.400}' },
+            disabledBorder: { value: '{colors.neutral.400}' },
           },
         },
         notification: {
