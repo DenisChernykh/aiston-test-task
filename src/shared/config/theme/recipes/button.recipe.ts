@@ -71,6 +71,10 @@ export const appButtonRecipe = defineRecipe({
         _hover: {
           bg: 'button.softBordered.hoverBg',
           borderColor: 'button.softBordered.hoverBorder',
+          _active: {
+            bg: 'button.softBordered.activeBg',
+            borderColor: 'button.softBordered.activeBorder',
+          },
         },
         _active: {
           bg: 'button.softBordered.activeBg',
