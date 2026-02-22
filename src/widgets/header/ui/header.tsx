@@ -5,7 +5,7 @@ import { useBreakpointValue } from '@chakra-ui/react'
 
 export function Header() {
   const { data, isLoading } = useCurrentUser()
-  const isDesktop = useBreakpointValue({ base: false, lg: true }) ?? false
+  const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
 
   const handleLogout = () => {
     console.log('[header] logout clicked', { userId: data?.id ?? null })
