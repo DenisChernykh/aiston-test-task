@@ -1,3 +1,4 @@
+import { appButtonRecipe } from './recipes'
 import { createSystem, defaultConfig, defineConfig } from '@chakra-ui/react'
 
 const config = defineConfig({
@@ -177,7 +178,66 @@ const config = defineConfig({
           neutral: { value: '{colors.neutral.900}' },
           empty: { value: 'rgba(28,28,28,0.3)' },
         },
+        button: {
+          focusRing: { value: '{colors.border.focus}' },
+
+          solid: {
+            bg: { value: '{colors.neutral.900}' },
+            fg: { value: '{colors.neutral.white}' },
+            hoverBg: { value: '{colors.neutral.925}' },
+            activeBg: { value: '{colors.neutral.black}' },
+            disabledBg: { value: '{colors.neutral.900}' },
+            disabledFg: { value: '{colors.neutral.white}' },
+          },
+
+          solidMuted: {
+            bg: { value: '{colors.neutral.900}' },
+            fg: { value: '{colors.neutral.50}' },
+            hoverBg: { value: '{colors.neutral.925}' },
+            activeBg: { value: '{colors.neutral.black}' },
+            disabledBg: { value: '{colors.neutral.900}' },
+            disabledFg: { value: '{colors.neutral.50}' },
+          },
+
+          soft: {
+            bg: { value: '{colors.neutral.50}' },
+            fg: { value: '{colors.neutral.900}' },
+            hoverBg: { value: '{colors.neutral.100}' },
+            activeBg: { value: '{colors.neutral.150}' },
+            disabledBg: { value: '{colors.neutral.50}' },
+            disabledFg: { value: '{colors.neutral.900}' },
+          },
+
+          softBordered: {
+            bg: { value: '{colors.neutral.50}' },
+            fg: { value: '{colors.neutral.900}' },
+            border: { value: '{colors.neutral.300}' },
+            hoverBg: { value: '{colors.neutral.100}' },
+            hoverBorder: { value: '{colors.neutral.400}' },
+            activeBg: { value: '{colors.neutral.150}' },
+            activeBorder: { value: '{colors.neutral.450}' },
+            disabledBg: { value: '{colors.neutral.50}' },
+            disabledFg: { value: '{colors.neutral.900}' },
+            disabledBorder: { value: '{colors.neutral.300}' },
+          },
+
+          outline: {
+            bg: { value: '{colors.transparent}' },
+            fg: { value: '{colors.neutral.900}' },
+            border: { value: '{colors.neutral.900}' },
+            hoverBg: { value: '{colors.neutral.50}' },
+            hoverBorder: { value: '{colors.neutral.900}' },
+            activeBg: { value: '{colors.neutral.100}' },
+            activeBorder: { value: '{colors.neutral.900}' },
+            disabledBg: { value: '{colors.transparent}' },
+            disabledFg: { value: '{colors.neutral.900}' },
+            disabledBorder: { value: '{colors.neutral.900}' },
+          },
+        },
       },
+    },
+    recipes: {
+      button: appButtonRecipe,
     },
   },
 })
