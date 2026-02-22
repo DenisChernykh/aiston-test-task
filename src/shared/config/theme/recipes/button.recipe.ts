@@ -104,6 +104,25 @@ export const appButtonRecipe = defineRecipe({
           borderColor: 'button.outline.disabledBorder',
         },
       },
+      floatingOutline: {
+        bg: 'button.floatingOutline.bg',
+        color: 'button.floatingOutline.fg',
+        borderColor: 'button.floatingOutline.border',
+        borderWidth: 'floating',
+        _hover: {
+          bg: 'button.floatingOutline.hoverBg',
+          borderColor: 'button.floatingOutline.border',
+        },
+        _active: {
+          bg: 'button.floatingOutline.activeBg',
+          borderColor: 'button.floatingOutline.border',
+        },
+        _disabled: {
+          bg: 'button.floatingOutline.disabledBg',
+          color: 'button.floatingOutline.disabledFg',
+          borderColor: 'button.floatingOutline.disabledBorder',
+        },
+      },
     },
     size: {
       desktop: {
@@ -144,6 +163,15 @@ export const appButtonRecipe = defineRecipe({
         _disabled: {
           opacity: 0.5,
         },
+      },
+      floating: {
+        h: 'buttonDesktop',
+        minH: 'buttonDesktop',
+        px: '12',
+        borderRadius: 'xs',
+        fontSize: 'lg',
+        lineHeight: 'md',
+        fontWeight: 'regular',
       },
     },
   },
