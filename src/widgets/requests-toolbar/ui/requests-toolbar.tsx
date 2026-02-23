@@ -1,4 +1,9 @@
 import { RequestActionsDesktop, RequestActionsMobileFloating } from '@/features/request-actions'
+import {
+  DEFAULT_REQUEST_STATUS_FILTER,
+  RequestFiltersRow,
+  type RequestStatusFilterValue,
+} from '@/features/request-filters'
 import { RequestSearchField } from '@/features/request-search'
 import { AppButton } from '@/shared/ui/button'
 import { Box, HStack, useBreakpointValue } from '@chakra-ui/react'
@@ -10,6 +15,10 @@ export function RequestsToolbar() {
   const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
   const [searchValue, setSearchValue] = useState('')
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
+    DEFAULT_REQUEST_STATUS_FILTER,
+  )
+  const [onlyMine, setOnlyMine] = useState(false)
 
   if (isDesktop) {
     return (
@@ -18,12 +27,27 @@ export function RequestsToolbar() {
           <RequestSearchField value={searchValue} onChange={setSearchValue} />
           <RequestActionsDesktop onExportClick={noop} onCreateClick={noop} />
         </HStack>
+
+        <RequestFiltersRow
+          status={statusFilter}
+          onlyMine={onlyMine}
+          onStatusChange={setStatusFilter}
+          onOnlyMineChange={setOnlyMine}
+        />
       </Box>
     )
   }
 
   return (
     <>
+      <Box pl="16">
+        <RequestFiltersRow
+          status={statusFilter}
+          onlyMine={onlyMine}
+          onStatusChange={setStatusFilter}
+          onOnlyMineChange={setOnlyMine}
+        />
+      </Box>
       <Box
         opacity={mobileSearchOpen ? 0 : 1}
         transitionProperty="opacity"
