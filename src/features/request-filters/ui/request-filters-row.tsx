@@ -19,13 +19,22 @@ export function RequestFiltersRow({
   const isMobile = useBreakpointValue({ base: true, md: false }) ?? false
 
   return (
-    <Box overflowX="auto" overflowY="hidden">
+    <Box
+      overflowX={{ base: 'auto', md: 'visible' }}
+      overflowY="hidden"
+      css={{
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none',
+        WebkitOverflowScrolling: 'touch',
+        '&::-webkit-scrollbar': { display: 'none' },
+      }}
+    >
       <HStack
-        w="fit-content"
+        px={{ base: '16', md: '0' }}
+        w={{ base: 'max-content', md: 'fit-content' }}
         gap={{ base: '8', md: '0' }}
         align="center"
         py={{ base: '10', md: '21' }}
-        pr={{ base: '16', md: '0' }}
       >
         {isMobile ? (
           <>

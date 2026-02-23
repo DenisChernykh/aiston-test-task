@@ -40,14 +40,13 @@ export function RequestsToolbar() {
 
   return (
     <>
-      <Box pl="16">
-        <RequestFiltersRow
-          status={statusFilter}
-          onlyMine={onlyMine}
-          onStatusChange={setStatusFilter}
-          onOnlyMineChange={setOnlyMine}
-        />
-      </Box>
+      <RequestFiltersRow
+        status={statusFilter}
+        onlyMine={onlyMine}
+        onStatusChange={setStatusFilter}
+        onOnlyMineChange={setOnlyMine}
+      />
+
       <Box
         opacity={mobileSearchOpen ? 0 : 1}
         transitionProperty="opacity"
@@ -60,7 +59,6 @@ export function RequestsToolbar() {
           onCreateClick={noop}
         />
       </Box>
-
       <Box
         position="fixed"
         insetX="0"
