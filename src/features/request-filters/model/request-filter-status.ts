@@ -25,8 +25,8 @@ export const REQUEST_STATUS_FILTER_OPTIONS: RequestStatusFilterOption[] = [
 ]
 export const MOBILE_REQUEST_STATUS_FILTER_SEQUENCE: RequestStatusFilterValue[] = [
   'all',
-  'onReview',
   'new',
+  'onReview',
   'inProgress',
   'awaitingParts',
   'ready',
