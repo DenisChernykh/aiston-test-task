@@ -105,6 +105,7 @@ const config = defineConfig({
         iconSm: { value: '14px' },
         iconMd: { value: '18px' },
         iconLg: { value: '24px' },
+        filterDivider: { value: '3px' },
       },
       fonts: {
         heading: { value: "'Inter', sans-serif" },
