@@ -5,7 +5,6 @@ import {
   useRequestCreateForm,
 } from '@/features/request-create/model/use-request-create-form'
 import { toaster } from '@/shared/ui/toaster'
-import type { Dialog } from '@chakra-ui/react'
 import type { BaseSyntheticEvent } from 'react'
 
 const EMPTY_OPTIONS: CreateRequestFormOptions = {
@@ -21,12 +20,16 @@ export type UseRequestCreateModalControllerParams = {
   onOpenChange: (open: boolean) => void
 }
 
+type OpenChangeDetails = {
+  open: boolean
+}
+
 export type UseRequestCreateModalControllerResult = {
   form: ReturnType<typeof useRequestCreateForm>
   options: CreateRequestFormOptions
   optionsState: RequestCreateOptionsState
   isSubmitDisabled: boolean
-  handleDialogOpenChange: (details: Dialog.OpenChangeDetails) => void
+  handleDialogOpenChange: (details: OpenChangeDetails) => void
   handleCancel: () => void
   handleRetry: () => void
   handleSubmit: (event?: BaseSyntheticEvent) => Promise<void>
@@ -79,7 +82,7 @@ export function useRequestCreateModalController({
     onOpenChange(false)
   }
 
-  function handleDialogOpenChange(details: Dialog.OpenChangeDetails) {
+  function handleDialogOpenChange(details: OpenChangeDetails) {
     if (!details.open) {
       resetForm()
     }

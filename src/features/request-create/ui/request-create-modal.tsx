@@ -1,7 +1,7 @@
 import { useRequestCreateModalController } from '@/features/request-create/model'
 import { RequestCreateModalDesktop } from '@/features/request-create/ui/request-create-modal.desktop'
 import { RequestCreateModalMobile } from '@/features/request-create/ui/request-create-modal.mobile'
-import { Dialog, useBreakpointValue } from '@chakra-ui/react'
+import { Dialog, Drawer, useBreakpointValue } from '@chakra-ui/react'
 import type { FormEventHandler } from 'react'
 
 export type RequestCreateModalProps = {
@@ -17,9 +17,9 @@ export function RequestCreateModal({ open, onOpenChange }: RequestCreateModalPro
     void controller.handleSubmit(event)
   }
 
-  return (
-    <Dialog.Root open={open} onOpenChange={controller.handleDialogOpenChange}>
-      {isDesktop ? (
+  if (isDesktop) {
+    return (
+      <Dialog.Root open={open} onOpenChange={controller.handleDialogOpenChange}>
         <RequestCreateModalDesktop
           form={controller.form}
           options={controller.options}
@@ -29,16 +29,25 @@ export function RequestCreateModal({ open, onOpenChange }: RequestCreateModalPro
           onRetry={controller.handleRetry}
           isSubmitDisabled={controller.isSubmitDisabled}
         />
-      ) : (
-        <RequestCreateModalMobile
-          form={controller.form}
-          options={controller.options}
-          optionsState={controller.optionsState}
-          onSubmit={handleFormSubmit}
-          onRetry={controller.handleRetry}
-          isSubmitDisabled={controller.isSubmitDisabled}
-        />
-      )}
-    </Dialog.Root>
+      </Dialog.Root>
+    )
+  }
+
+  return (
+    <Drawer.Root
+      open={open}
+      placement="bottom"
+      size="full"
+      onOpenChange={controller.handleDialogOpenChange}
+    >
+      <RequestCreateModalMobile
+        form={controller.form}
+        options={controller.options}
+        optionsState={controller.optionsState}
+        onSubmit={handleFormSubmit}
+        onRetry={controller.handleRetry}
+        isSubmitDisabled={controller.isSubmitDisabled}
+      />
+    </Drawer.Root>
   )
 }

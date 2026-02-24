@@ -7,7 +7,7 @@ import {
 } from '@/features/request-create/ui/request-create-form-fields'
 import { ArrowBackIcon } from '@/shared/assets/icons'
 import { AppButton } from '@/shared/ui/button'
-import { Dialog, HStack, IconButton, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Drawer, HStack, IconButton, Spinner, Text, VStack } from '@chakra-ui/react'
 import type { FormEventHandler } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 
@@ -65,98 +65,95 @@ export function RequestCreateModalMobile({
   isSubmitDisabled,
 }: RequestCreateModalMobileProps) {
   return (
-    <>
-      <Dialog.Backdrop bg="bg.overlay" />
-
-      <Dialog.Positioner p="0">
-        <Dialog.Content
-          w="100vw"
-          h="100dvh"
-          maxH="100dvh"
-          borderRadius="0"
-          bg="bg.canvas"
-          overflow="hidden"
-          display="flex"
-          flexDirection="column"
+    <Drawer.Positioner p="0">
+      <Drawer.Content
+        w="100vw"
+        h="100dvh"
+        maxH="100dvh"
+        borderRadius="0"
+        bg="bg.canvas"
+        overflow="hidden"
+        display="flex"
+        flexDirection="column"
+      >
+        <Drawer.Header
+          h="headerMobile"
+          px="16"
+          py="24"
+          borderBottomWidth="1px"
+          borderColor="border.muted"
         >
-          <Dialog.Header
-            h="headerMobile"
-            px="16"
-            py="24"
-            borderBottomWidth="1px"
-            borderColor="border.muted"
-          >
-            <HStack w="full" align="center" gap="10">
-              <Dialog.CloseTrigger asChild>
-                <IconButton
-                  aria-label="Назад"
-                  variant="ghost"
-                  minW="unset"
-                  w="iconLg"
-                  h="iconLg"
-                  p="0"
-                  color="text.primary"
-                  _hover={{ bg: 'transparent' }}
-                >
-                  <ArrowBackIcon w="iconLg" h="iconLg" />
-                </IconButton>
-              </Dialog.CloseTrigger>
-
-              <Dialog.Title
-                fontSize="xl"
-                lineHeight="md"
-                fontWeight="semibold"
-                letterSpacing="titleMobile"
+          <HStack w="full" align="center" gap="10">
+            <Drawer.CloseTrigger asChild position="static">
+              <IconButton
+                aria-label="Назад"
+                variant="ghost"
+                position="static"
+                minW="unset"
+                w="iconLg"
+                h="iconLg"
+                p="0"
                 color="text.mobilePrimary"
+                _hover={{ bg: 'transparent' }}
               >
-                Создание заявки
-              </Dialog.Title>
-            </HStack>
-          </Dialog.Header>
+                <ArrowBackIcon w="iconLg" h="iconLg" />
+              </IconButton>
+            </Drawer.CloseTrigger>
 
-          <Dialog.Body p="0" flex="1" overflowY="auto">
-            {optionsState === 'loading' ? <MobileLoadingState /> : null}
-            {optionsState === 'error' ? <MobileErrorState onRetry={onRetry} /> : null}
-            {optionsState === 'empty' ? <MobileEmptyState /> : null}
+            <Drawer.Title
+              fontSize="xl"
+              lineHeight="md"
+              fontWeight="semibold"
+              letterSpacing="titleMobile"
+              color="text.mobilePrimary"
+            >
+              Создание заявки
+            </Drawer.Title>
+          </HStack>
+        </Drawer.Header>
 
-            {optionsState === 'ready' ? (
-              <form id={MOBILE_FORM_ID} onSubmit={onSubmit}>
-                <VStack
-                  align="stretch"
-                  w="modalMobileContent"
-                  maxW="100%"
-                  mx="auto"
-                  px="16"
-                  pt="24"
-                  pb="130"
-                  gap="24"
-                >
-                  <RequestCreateLocationFields form={form} options={options} isDesktop={false} />
-                  <RequestCreateIssueFields form={form} options={options} isDesktop={false} />
-                </VStack>
-              </form>
-            ) : null}
-          </Dialog.Body>
+        <Drawer.Body p="0" flex="1" overflowY="auto">
+          {optionsState === 'loading' ? <MobileLoadingState /> : null}
+          {optionsState === 'error' ? <MobileErrorState onRetry={onRetry} /> : null}
+          {optionsState === 'empty' ? <MobileEmptyState /> : null}
 
           {optionsState === 'ready' ? (
-            <Dialog.Footer p="10" px="16" bg="bg.canvas" borderTopWidth="0" flexShrink={0}>
-              <VStack w="full" gap="10">
-                <RequestCreateMobileAttachField form={form} />
-                <AppButton
-                  type="submit"
-                  form={MOBILE_FORM_ID}
-                  variant="solidMuted"
-                  size="mobile"
-                  w="full"
-                  disabled={isSubmitDisabled}
-                >
-                  Создать заявку
-                </AppButton>
+            <form id={MOBILE_FORM_ID} onSubmit={onSubmit}>
+              <VStack
+                align="stretch"
+                w="modalMobileContent"
+                maxW="100%"
+                mx="auto"
+                px="16"
+                pt="24"
+                pb="130"
+                gap="24"
+              >
+                <RequestCreateLocationFields form={form} options={options} isDesktop={false} />
+                <RequestCreateIssueFields form={form} options={options} isDesktop={false} />
               </VStack>
-            </Dialog.Footer>
+            </form>
           ) : null}
-        </Dialog.Content>
-      </Dialog.Positioner>
-    </>
+        </Drawer.Body>
+
+        {optionsState === 'ready' ? (
+          <Drawer.Footer p="10" px="16" bg="bg.canvas" borderTopWidth="0" flexShrink={0}>
+            <VStack w="modalMobileContent" maxW="100%" mx="auto" align="stretch" gap="10">
+              <RequestCreateMobileAttachField form={form} />
+              <AppButton
+                type="submit"
+                form={MOBILE_FORM_ID}
+                variant="solidMuted"
+                size="mobile"
+                w="full"
+                disabled={isSubmitDisabled}
+              >
+                Создать заявку
+              </AppButton>
+            </VStack>
+          </Drawer.Footer>
+        ) : null}
+      </Drawer.Content>
+    </Drawer.Positioner>
   )
 }

@@ -17,7 +17,7 @@ export function RequestCreateMobileAttachField({
       name="attachments"
       control={form.control}
       render={({ field, fieldState }) => (
-        <VStack align="stretch" gap="6">
+        <VStack w="full" align="stretch" gap="6">
           <FileUpload.Root
             acceptedFiles={field.value}
             onFileChange={(details) => {

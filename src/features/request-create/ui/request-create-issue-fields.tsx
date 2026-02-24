@@ -5,10 +5,7 @@ import {
   TOPIC_PLACEHOLDER,
   type RequestCreateFormFieldsSharedProps,
 } from '@/features/request-create/ui/request-create-form.constants'
-import {
-  RequestDesktopSelectField,
-  RequestNativeSelectField,
-} from '@/features/request-create/ui/request-native-select-field'
+import { RequestDesktopSelectField } from '@/features/request-create/ui/request-native-select-field'
 import { RequestTextareaField } from '@/features/request-create/ui/request-textarea-field'
 import { HStack, Text, VStack } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
@@ -16,7 +13,7 @@ import { Controller } from 'react-hook-form'
 function PriorityOptionContent({ option }: { option: PriorityOption }) {
   return (
     <HStack gap="8" align="center" minW="0">
-      <RequestPriorityIcon priority={option.value} boxSize="24px" />
+      <RequestPriorityIcon priority={option.value} />
       <Text
         fontSize="xs"
         lineHeight="tight"
@@ -32,6 +29,39 @@ function PriorityOptionContent({ option }: { option: PriorityOption }) {
           {option.hint}
         </Text>
       </Text>
+    </HStack>
+  )
+}
+
+function PriorityOptionMobileContent({ option }: { option: PriorityOption }) {
+  return (
+    <HStack gap="8" align="center" minW="0" w="full">
+      <RequestPriorityIcon priority={option.value} boxSize="iconSm" />
+      <VStack align="start" justify="center" gap="0" minW="0" flex="1">
+        <Text
+          fontSize="xs"
+          lineHeight="tight"
+          color="text.primary"
+          fontWeight="medium"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          w="full"
+        >
+          {option.label}:
+        </Text>
+        <Text
+          fontSize="xs"
+          lineHeight="tight"
+          color="text.secondary"
+          whiteSpace="nowrap"
+          overflow="hidden"
+          textOverflow="ellipsis"
+          w="full"
+        >
+          {option.hint}
+        </Text>
+      </VStack>
     </HStack>
   )
 }
@@ -74,42 +104,35 @@ export function RequestCreateIssueFields({
         name="priority"
         control={form.control}
         render={({ field, fieldState }) => (
-          isDesktop ? (
-            <RequestDesktopSelectField
-              label="Приоритет"
-              name={field.name}
-              value={field.value}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-              options={options.priorities}
-              disabled={disabled}
-              invalid={fieldState.invalid}
-              errorText={fieldState.error?.message}
-              h="fieldPriorityDesktop"
-              radius={radius}
-              fontSize="xs"
-              lineHeight="tight"
-              renderDesktopValue={(option) => <PriorityOptionContent option={option} />}
-              renderDesktopOption={(option) => <PriorityOptionContent option={option} />}
-            />
-          ) : (
-            <RequestNativeSelectField
-              label="Приоритет"
-              name={field.name}
-              value={field.value}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-              options={options.priorities}
-              disabled={disabled}
-              invalid={fieldState.invalid}
-              errorText={fieldState.error?.message}
-              h="fieldPriorityMobile"
-              radius={radius}
-              fontSize="xs"
-              lineHeight="tight"
-              renderOptionLabel={(item) => `◇ ${item.label}: ${item.hint}`}
-            />
-          )
+          <RequestDesktopSelectField
+            label="Приоритет"
+            name={field.name}
+            value={field.value}
+            onBlur={field.onBlur}
+            onChange={field.onChange}
+            options={options.priorities}
+            disabled={disabled}
+            invalid={fieldState.invalid}
+            errorText={fieldState.error?.message}
+            h={isDesktop ? 'fieldPriorityDesktop' : 'fieldPriorityMobile'}
+            radius={radius}
+            fontSize="xs"
+            lineHeight="tight"
+            renderDesktopValue={(option) =>
+              isDesktop ? (
+                <PriorityOptionContent option={option} />
+              ) : (
+                <PriorityOptionMobileContent option={option} />
+              )
+            }
+            renderDesktopOption={(option) =>
+              isDesktop ? (
+                <PriorityOptionContent option={option} />
+              ) : (
+                <PriorityOptionMobileContent option={option} />
+              )
+            }
+          />
         )}
       />
 
