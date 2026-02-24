@@ -1,4 +1,7 @@
-import { useRequestsTableViewModel } from '@/widgets/requests-table/model/use-requests-table-view-model'
+import {
+  type RequestsTableFilters,
+  useRequestsTableViewModel,
+} from '@/widgets/requests-table/model/use-requests-table-view-model'
 import { RequestsTableDesktop } from '@/widgets/requests-table/ui/requests-table.desktop'
 import { RequestsTableEmpty } from '@/widgets/requests-table/ui/requests-table.empty'
 import { RequestsTableError } from '@/widgets/requests-table/ui/requests-table.error'
@@ -6,10 +9,15 @@ import { RequestsTableLoading } from '@/widgets/requests-table/ui/requests-table
 import { RequestsTableMobile } from '@/widgets/requests-table/ui/requests-table.mobile'
 import { useBreakpointValue } from '@chakra-ui/react'
 
-export function RequestsTable() {
+export type RequestsTableProps = {
+  filters: RequestsTableFilters
+  onResetFilters: () => void
+}
+
+export function RequestsTable({ filters, onResetFilters }: RequestsTableProps) {
   const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
-  const { requests, groupedRequests, isLoading, error, hasData, reload } =
-    useRequestsTableViewModel()
+  const { requests, groupedRequests, isLoading, error, hasSourceData, hasFilteredData, reload } =
+    useRequestsTableViewModel(filters)
 
   if (isLoading) {
     return <RequestsTableLoading />
@@ -19,8 +27,12 @@ export function RequestsTable() {
     return <RequestsTableError message={error} onRetry={() => void reload()} />
   }
 
-  if (!hasData) {
-    return <RequestsTableEmpty />
+  if (!hasSourceData) {
+    return <RequestsTableEmpty mode="noData" />
+  }
+
+  if (!hasFilteredData) {
+    return <RequestsTableEmpty mode="noMatches" onResetFilters={onResetFilters} />
   }
 
   if (isDesktop) {

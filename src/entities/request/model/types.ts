@@ -1,4 +1,12 @@
-export type RequestStatus = 'new' | 'inProgress' | 'ready' | 'closed' | 'paused' | 'awaitingParts'
+export type RequestStatus =
+  | 'new'
+  | 'onReview'
+  | 'inProgress'
+  | 'awaitingParts'
+  | 'ready'
+  | 'rejected'
+  | 'closed'
+  | 'paused'
 
 export type RequestPriority = 'critical' | 'high' | 'medium' | 'low'
 
@@ -62,4 +70,3 @@ export type RequestCreateFormValues = {
   isWarranty: boolean
   attachments: File[]
 }
-

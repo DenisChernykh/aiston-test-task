@@ -16,8 +16,10 @@ type StatusMeta = {
 
 const DEFAULT_STATUS_META: Record<RequestStatus, StatusMeta> = {
   new: { label: 'Новая', bg: 'status.newBg', fontWeight: 'regular' },
+  onReview: { label: 'На рассмотрении', bg: 'status.inProgressBg', fontWeight: 'regular' },
   inProgress: { label: 'В работе', bg: 'status.inProgressBg', fontWeight: 'regular' },
   ready: { label: 'Готово', bg: 'status.doneBg', fontWeight: 'regular' },
+  rejected: { label: 'Отклонена', bg: 'status.closedBg', fontWeight: 'regular' },
   closed: { label: 'Закрыто', bg: 'status.closedBg', fontWeight: 'regular' },
   paused: {
     label: 'На паузе',
@@ -30,6 +32,11 @@ const DEFAULT_STATUS_META: Record<RequestStatus, StatusMeta> = {
 
 const MOBILE_TABLE_STATUS_META: Record<RequestStatus, StatusMeta> = {
   new: { label: 'Новая', bg: 'status.newBg', fontWeight: 'regular' },
+  onReview: {
+    label: 'На рассмотрении',
+    bg: 'status.mobileTableInProgressBg',
+    fontWeight: 'regular',
+  },
   inProgress: {
     label: 'В работе',
     bg: 'status.mobileTableInProgressBg',
@@ -40,6 +47,7 @@ const MOBILE_TABLE_STATUS_META: Record<RequestStatus, StatusMeta> = {
     bg: 'status.mobileTableReadyBg',
     fontWeight: 'medium',
   },
+  rejected: { label: 'Отклонена', bg: 'status.mobileTableMutedBg', fontWeight: 'regular' },
   closed: { label: 'Закрыто', bg: 'status.mobileTableMutedBg', fontWeight: 'regular' },
   paused: {
     label: 'На паузе',

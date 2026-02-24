@@ -44,7 +44,7 @@ export const requestsMockDb: RequestItem[] = [
     topic: 'Сбой сканера штрих-кодов',
     category: 'ИТ',
     technician: 'Киселев А.',
-    status: 'inProgress',
+    status: 'onReview',
     reactionTime: '00:18:30',
     reactionState: 'ok',
     resolutionTime: '00:12:42',
