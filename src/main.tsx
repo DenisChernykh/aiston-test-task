@@ -8,11 +8,13 @@ import '@fontsource/inter/700.css'
 import '@fontsource-variable/golos-text/wght.css'
 import '@/app/styles/index.css'
 import { AppChakraProvider } from '@/app/providers/chakra-provider'
+import { Toaster } from '@/shared/ui/toaster'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppChakraProvider>
       <App />
+      <Toaster />
     </AppChakraProvider>
   </StrictMode>,
 )
