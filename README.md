@@ -42,6 +42,22 @@ pnpm preview
 | `pnpm format` | Форматирование Prettier |
 | `pnpm format:check` | Проверка форматирования |
 | `pnpm chakra:typegen` | Генерация Chakra type tokens |
+| `pnpm test` | Запуск unit/UI тестов |
+| `pnpm test:watch` | Запуск тестов в watch-режиме |
+
+## Тесты
+
+Тестовый стек:
+
+- `Vitest`
+- `@testing-library/react`
+- `happy-dom`
+
+Покрытые smoke UI-сценарии:
+
+- `RequestSearchField` — рендер плейсхолдера и вызов `onChange`.
+- `RequestOnlyMineToggle` — переключение `aria-pressed` и вызов `onChange`.
+- `RequestStatusBadge` — корректный текст для всех статусов.
 
 ## Чеклист требований
 
