@@ -19,7 +19,7 @@ export const appButtonRecipe = defineRecipe({
     fontWeight: 'regular',
     userSelect: 'none',
     cursor: 'pointer',
-    transitionProperty: 'background-color, border-color, color, opacity, box-shadow',
+    transitionProperty: 'background-color, border-color, color, opacity, box-shadow, transform',
     transitionDuration: '200ms',
     transitionTimingFunction: 'ease-in-out',
     _focusVisible: {
@@ -37,8 +37,19 @@ export const appButtonRecipe = defineRecipe({
       solid: {
         bg: 'button.solid.bg',
         color: 'button.solid.fg',
-        _hover: { bg: 'button.solid.hoverBg' },
-        _active: { bg: 'button.solid.activeBg' },
+        _hover: {
+          bg: 'button.solid.hoverBg',
+          _active: {
+            bg: 'button.solid.activeBg',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.16)',
+          },
+        },
+        _active: {
+          bg: 'button.solid.activeBg',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.16)',
+        },
         _disabled: {
           bg: 'button.solid.disabledBg',
           color: 'button.solid.disabledFg',
@@ -47,8 +58,19 @@ export const appButtonRecipe = defineRecipe({
       solidMuted: {
         bg: 'button.solidMuted.bg',
         color: 'button.solidMuted.fg',
-        _hover: { bg: 'button.solidMuted.hoverBg' },
-        _active: { bg: 'button.solidMuted.activeBg' },
+        _hover: {
+          bg: 'button.solidMuted.hoverBg',
+          _active: {
+            bg: 'button.solidMuted.activeBg',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.16)',
+          },
+        },
+        _active: {
+          bg: 'button.solidMuted.activeBg',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.16)',
+        },
         _disabled: {
           bg: 'button.solidMuted.disabledBg',
           color: 'button.solidMuted.disabledFg',
@@ -57,8 +79,19 @@ export const appButtonRecipe = defineRecipe({
       soft: {
         bg: 'button.soft.bg',
         color: 'button.soft.fg',
-        _hover: { bg: 'button.soft.hoverBg' },
-        _active: { bg: 'button.soft.activeBg' },
+        _hover: {
+          bg: 'button.soft.hoverBg',
+          _active: {
+            bg: 'button.soft.activeBg',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
+          },
+        },
+        _active: {
+          bg: 'button.soft.activeBg',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
+        },
         _disabled: {
           bg: 'button.soft.disabledBg',
           color: 'button.soft.disabledFg',
@@ -74,11 +107,15 @@ export const appButtonRecipe = defineRecipe({
           _active: {
             bg: 'button.softBordered.activeBg',
             borderColor: 'button.softBordered.activeBorder',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
           },
         },
         _active: {
           bg: 'button.softBordered.activeBg',
           borderColor: 'button.softBordered.activeBorder',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
         },
         _disabled: {
           bg: 'button.softBordered.disabledBg',
@@ -93,10 +130,18 @@ export const appButtonRecipe = defineRecipe({
         _hover: {
           bg: 'button.outline.hoverBg',
           borderColor: 'button.outline.hoverBorder',
+          _active: {
+            bg: 'button.outline.activeBg',
+            borderColor: 'button.outline.activeBorder',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
+          },
         },
         _active: {
           bg: 'button.outline.activeBg',
           borderColor: 'button.outline.activeBorder',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
         },
         _disabled: {
           bg: 'button.outline.disabledBg',
@@ -112,10 +157,18 @@ export const appButtonRecipe = defineRecipe({
         _hover: {
           bg: 'button.floatingOutline.hoverBg',
           borderColor: 'button.floatingOutline.border',
+          _active: {
+            bg: 'button.floatingOutline.activeBg',
+            borderColor: 'button.floatingOutline.border',
+            transform: 'translateY(1px)',
+            boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
+          },
         },
         _active: {
           bg: 'button.floatingOutline.activeBg',
           borderColor: 'button.floatingOutline.border',
+          transform: 'translateY(1px)',
+          boxShadow: 'inset 0 0 0 1px rgba(28, 28, 28, 0.14)',
         },
         _disabled: {
           bg: 'button.floatingOutline.disabledBg',
