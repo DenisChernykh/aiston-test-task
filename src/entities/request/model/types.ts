@@ -27,7 +27,7 @@ export type ListRequestParams = {
   search?: string
 }
 
-export type CreteateRequestPayload = {
+export type CreateRequestPayload = {
   pharmacyId: string
   categoryId: string
   topic: string
@@ -47,8 +47,19 @@ export type PriorityOption = {
   label: string
   hint: string
 }
-export type RequestFormOptionsResponse = {
+export type CreateRequestFormOptions = {
   pharmacies: SelectOption[]
   categories: SelectOption[]
   priorities: PriorityOption[]
 }
+
+export type RequestCreateFormValues = {
+  pharmacyId: string
+  categoryId: string
+  topic: string
+  priority: RequestPriority
+  description: string
+  isWarranty: boolean
+  attachments: File[]
+}
+

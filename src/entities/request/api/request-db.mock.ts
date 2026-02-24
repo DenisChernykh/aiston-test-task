@@ -1,4 +1,4 @@
-import type { RequestItem } from '@/entities/request/model'
+import type { CreateRequestFormOptions, RequestItem } from '@/entities/request/model'
 
 function createMockDate(daysAgo: number, hours = 12, minutes = 0, seconds = 0): string {
   const now = new Date()
@@ -207,3 +207,54 @@ export const requestsMockDb: RequestItem[] = [
     status: 'ready',
   },
 ]
+
+export const requestCreateFormOptionsMock: CreateRequestFormOptions = {
+  pharmacies: [
+    { value: 'ph-065', label: '065 — Геленджик, Островского 7' },
+    { value: 'ph-150', label: '150 — Кореновск, Красная 108' },
+    { value: 'ph-164', label: '164 — Краснодар, Трудовая 5' },
+    { value: 'ph-190', label: '190 — Геленджик, Душистая 24' },
+    { value: 'ph-201', label: '201 — Новороссийск, Советов 31' },
+    { value: 'ph-267', label: '267 — Анапа, Парковая 67к2' },
+    { value: 'ph-304', label: '304 — Краснодар, Северная 125' },
+    { value: 'ph-412', label: '412 — Сочи, Виноградная 18' },
+  ],
+  categories: [
+    { value: 'cat-cash', label: 'Кассы и терминалы' },
+    { value: 'cat-it', label: 'ИТ и связь' },
+    { value: 'cat-fridge', label: 'Холодильники, кондиционеры и климатическое оборудование' },
+    { value: 'cat-plumbing', label: 'Сантехника и водоснабжение' },
+    { value: 'cat-electric', label: 'Электрика и освещение' },
+    { value: 'cat-premises', label: 'Помещения и входная группа' },
+    { value: 'cat-network', label: 'Сеть и интернет' },
+    { value: 'cat-security', label: 'Безопасность и видеонаблюдение' },
+  ],
+  priorities: [
+    {
+      value: 'critical',
+      label: 'Критический',
+      hint: 'блокирует работу аптеки',
+    },
+    {
+      value: 'high',
+      label: 'Высокий',
+      hint: 'сильно влияет на эффективность',
+    },
+    {
+      value: 'medium',
+      label: 'Средний',
+      hint: 'влияет на эффективность, но не стопорит',
+    },
+    {
+      value: 'low',
+      label: 'Низкий',
+      hint: 'желательно исправить планово',
+    },
+  ],
+}
+
+export const requestCreateFormOptionsEmptyMock: CreateRequestFormOptions = {
+  pharmacies: [],
+  categories: [],
+  priorities: [],
+}
