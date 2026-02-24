@@ -7,7 +7,7 @@ export type RequestPriorityIconProps = {
   boxSize?: string
 }
 
-export function RequestPriorityIcon({ priority, boxSize = 'iconLg' }: RequestPriorityIconProps) {
+export function RequestPriorityIcon({ priority, boxSize = 'iconSm' }: RequestPriorityIconProps) {
   const meta = getRequestPriorityVisual(priority)
 
   if (meta.icon === 'critical') {

@@ -122,9 +122,9 @@ export function FilterAltIcon(props: IconProps) {
 
 export function DotUpChevronIcon(props: IconProps) {
   return (
-    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
       <path
-        d="M7.4 15.375L6 13.975L12 7.97501L18 13.975L16.6 15.375L12 10.8L7.4 15.375Z"
+        d="M2.75556 8.96889L1.77777 7.99111L7 2.76889L12.2222 7.99111L11.2444 8.96889L7 4.74333L2.75556 8.96889Z"
         fill="currentColor"
       />
     </chakra.svg>
@@ -133,9 +133,9 @@ export function DotUpChevronIcon(props: IconProps) {
 
 export function DotDoubleChevronIcon(props: IconProps) {
   return (
-    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
       <path
-        d="M7.4 18.3766L6 16.9766L12 10.9766L18 16.9766L16.6 18.3766L12 13.8016L7.4 18.3766ZM7.4 12.3766L6 10.9766L12 4.97656L18 10.9766L16.6 12.3766L12 7.80156L7.4 12.3766Z"
+        d="M2.75556 8.31333L1.77777 7.33556L7 2.11333L12.2222 7.33556L11.2444 8.31333L7 4.08778L2.75556 8.31333ZM2.75556 12.5533L1.77777 11.5756L7 6.35333L12.2222 11.5756L11.2444 12.5533L7 8.32778L2.75556 12.5533Z"
         fill="currentColor"
       />
     </chakra.svg>
@@ -144,11 +144,11 @@ export function DotDoubleChevronIcon(props: IconProps) {
 
 export function DotDiamondIcon(props: IconProps) {
   return (
-    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
       <path
-        d="M12 7.5L16.5 12L12 16.5L7.5 12L12 7.5Z"
+        d="M7 1.08889L12.9111 7L7 12.9111L1.08889 7L7 1.08889Z"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="1.4"
         strokeLinejoin="round"
       />
     </chakra.svg>
