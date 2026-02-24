@@ -2,7 +2,7 @@ import type { RequestStatus } from '@/entities/request/model'
 import { SlaAlertIcon, SlaCheckIcon, SlaNeutralClockIcon } from '@/shared/assets/icons'
 import { parseDurationToSeconds } from '@/shared/lib/parse-duration-to-seconds'
 import { HStack, Text } from '@chakra-ui/react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type RequestSlaCellProps = {
   value: string | null
@@ -100,7 +100,7 @@ function SlaIcon({ kind }: { kind: SlaIconKind }) {
 
 export function RequestSlaCell(props: RequestSlaCellProps) {
   const liveMode = isLiveMode(props)
-  const createdAtMs = useMemo(() => getTimestampMs(props.createdAt), [props.createdAt])
+  const createdAtMs = getTimestampMs(props.createdAt)
   const [nowMs, setNowMs] = useState(() => Date.now())
 
   useEffect(() => {
@@ -122,25 +122,23 @@ export function RequestSlaCell(props: RequestSlaCellProps) {
     }
   }, [createdAtMs, liveMode])
 
-  const view = useMemo<SlaView>(() => {
-    if (!liveMode) {
-      return getStaticSlaView({ value: props.value, kind: props.kind })
-    }
+  let view: SlaView
 
-    if (createdAtMs === null) {
-      return getEmptySlaView()
-    }
-
+  if (!liveMode) {
+    view = getStaticSlaView({ value: props.value, kind: props.kind })
+  } else if (createdAtMs === null) {
+    view = getEmptySlaView()
+  } else {
     const elapsedSeconds = Math.max(0, Math.floor((nowMs - createdAtMs) / 1000))
 
-    return {
+    view = {
       displayValue: formatToTimer(elapsedSeconds),
       icon: 'neutral',
       color: 'sla.neutral',
       fontSize: 'md',
       letterSpacing: 'compact',
     }
-  }, [createdAtMs, liveMode, nowMs, props.kind, props.value])
+  }
 
   return (
     <HStack gap="4" align="center">

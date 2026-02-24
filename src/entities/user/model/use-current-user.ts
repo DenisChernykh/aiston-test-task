@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/entities/user/api/user-api'
 import type { CurrentUser } from '@/entities/user/model/types'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type UseCurrentUserResult = {
   data: CurrentUser | null
@@ -13,8 +13,9 @@ export function useCurrentUser(): UseCurrentUserResult {
   const [data, setData] = useState<CurrentUser | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const initialLoadDoneRef = useRef(false)
 
-  const load = useCallback(async () => {
+  async function load() {
     setIsLoading(true)
     setError(null)
 
@@ -27,11 +28,16 @@ export function useCurrentUser(): UseCurrentUserResult {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
+    if (initialLoadDoneRef.current) {
+      return
+    }
+
+    initialLoadDoneRef.current = true
     void load()
-  }, [load])
+  })
 
   return { data, isLoading, error, reload: load }
 }

@@ -1,6 +1,6 @@
 import { getRequests } from '@/entities/request/api'
 import type { RequestItem } from '@/entities/request/model/types'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type UseRequestsResult = {
   requests: RequestItem[]
@@ -13,8 +13,9 @@ export function useRequests(): UseRequestsResult {
   const [requests, setRequests] = useState<RequestItem[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const initialLoadDoneRef = useRef(false)
 
-  const load = useCallback(async () => {
+  async function load() {
     setIsLoading(true)
     setError(null)
 
@@ -26,11 +27,16 @@ export function useRequests(): UseRequestsResult {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
+    if (initialLoadDoneRef.current) {
+      return
+    }
+
+    initialLoadDoneRef.current = true
     void load()
-  }, [load])
+  })
 
   return { requests, isLoading, error, reload: load }
 }

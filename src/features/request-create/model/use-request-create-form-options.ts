@@ -1,6 +1,6 @@
 import { getCreateRequestFormOptions } from '@/entities/request/api'
 import type { CreateRequestFormOptions } from '@/entities/request/model'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type UseRequestCreateFormOptionsParams = {
   open: boolean
@@ -19,8 +19,9 @@ export function useRequestCreateFormOptions({
   const [options, setOptions] = useState<CreateRequestFormOptions | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
+  const wasOpenRef = useRef(false)
 
-  const load = useCallback(async () => {
+  async function load() {
     setIsLoading(true)
     setError(null)
 
@@ -33,12 +34,19 @@ export function useRequestCreateFormOptions({
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
-    if (!open) return
-    void load()
-  }, [open, load])
+    if (open && !wasOpenRef.current) {
+      wasOpenRef.current = true
+      void load()
+      return
+    }
+
+    if (!open) {
+      wasOpenRef.current = false
+    }
+  }, [open])
 
   return { options, isLoading, error, reload: load }
 }

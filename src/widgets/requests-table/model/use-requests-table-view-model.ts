@@ -18,7 +18,7 @@ import {
   type RequestTableSortState,
   type RequestTableSortableColumn,
 } from '@/widgets/requests-table/model/request-table-sorting'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const APPLY_DELAY_MS = 220
 
@@ -137,6 +137,17 @@ function cloneColumnFilters(columnFilters: RequestTableColumnFilters): RequestTa
   }
 }
 
+function cloneSortState(sortState: RequestTableSortState): RequestTableSortState {
+  if (!sortState) {
+    return null
+  }
+
+  return {
+    column: sortState.column,
+    direction: sortState.direction,
+  }
+}
+
 export function useRequestsTableViewModel(
   filters: RequestsTableFilters,
   columnFilters: RequestTableColumnFilters,
@@ -159,27 +170,33 @@ export function useRequestsTableViewModel(
     columnFilters: cloneColumnFilters(columnFilters),
     sortState: null,
   }))
+
   const applySequenceRef = useRef(0)
+  const { status, onlyMine, search } = filters
+  const {
+    priority: priorityColumnFilters,
+    category: categoryColumnFilters,
+    technician: technicianColumnFilters,
+  } = columnFilters
 
-  const desiredState = useMemo<AppliedTableState>(() => {
-    return {
-      filters: cloneFilters(filters),
-      columnFilters: cloneColumnFilters(columnFilters),
-      sortState,
-    }
-  }, [columnFilters, filters, sortState])
+  const desiredKey = getTableStateKey({
+    filters: {
+      status,
+      onlyMine,
+      search,
+    },
+    columnFilters: {
+      priority: [...priorityColumnFilters],
+      category: [...categoryColumnFilters],
+      technician: [...technicianColumnFilters],
+    },
+    sortState: cloneSortState(sortState),
+  })
+  const appliedKey = getTableStateKey(appliedState)
 
-  const desiredKey = useMemo(() => {
-    return getTableStateKey(desiredState)
-  }, [desiredState])
-
-  const appliedKey = useMemo(() => {
-    return getTableStateKey(appliedState)
-  }, [appliedState])
-
-  const onSortChange = useCallback((column: RequestTableSortableColumn) => {
+  function onSortChange(column: RequestTableSortableColumn) {
     setSortState((prevSortState) => getNextSortState(prevSortState, column))
-  }, [])
+  }
 
   useEffect(() => {
     if (appliedKey === desiredKey) {
@@ -188,6 +205,19 @@ export function useRequestsTableViewModel(
 
     const applySequence = ++applySequenceRef.current
     let isCancelled = false
+    const desiredStateSnapshot = {
+      filters: {
+        status,
+        onlyMine,
+        search,
+      },
+      columnFilters: {
+        priority: [...priorityColumnFilters],
+        category: [...categoryColumnFilters],
+        technician: [...technicianColumnFilters],
+      },
+      sortState: cloneSortState(sortState),
+    }
 
     const applyState = async () => {
       await waitWithDelay(APPLY_DELAY_MS)
@@ -196,7 +226,7 @@ export function useRequestsTableViewModel(
         return
       }
 
-      setAppliedState(desiredState)
+      setAppliedState(desiredStateSnapshot)
     }
 
     void applyState()
@@ -204,7 +234,17 @@ export function useRequestsTableViewModel(
     return () => {
       isCancelled = true
     }
-  }, [appliedKey, desiredKey, desiredState])
+  }, [
+    appliedKey,
+    categoryColumnFilters,
+    desiredKey,
+    onlyMine,
+    priorityColumnFilters,
+    search,
+    sortState,
+    status,
+    technicianColumnFilters,
+  ])
 
   const sortedByCreatedAtRequests = sortByCreatedAtDesc(requests)
   const statusFilteredRequests = filterByStatus(sortedByCreatedAtRequests, appliedState.filters.status)
@@ -226,9 +266,9 @@ export function useRequestsTableViewModel(
   const isRowsApplying = !isLoading && appliedKey !== desiredKey
   const error = requestsError ?? (appliedState.filters.onlyMine ? currentUserError : null)
 
-  const reload = useCallback(async () => {
+  async function reload() {
     await Promise.all([reloadRequests(), reloadCurrentUser()])
-  }, [reloadCurrentUser, reloadRequests])
+  }
 
   return {
     requests: desktopSortedRequests,
