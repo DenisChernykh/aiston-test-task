@@ -1,4 +1,3 @@
-import type { RequestItem } from '@/entities/request/model'
 import { exportRequestsToCsv } from '@/features/request-actions'
 import {
   DEFAULT_REQUEST_STATUS_FILTER,
@@ -11,9 +10,10 @@ import {
   createEmptyRequestTableColumnFilters,
   type RequestTableColumnFilters,
 } from '@/widgets/requests-table/model/request-table-column-filters'
+import { useRequestsTableViewModel } from '@/widgets/requests-table/model/use-requests-table-view-model'
 import { RequestsToolbar } from '@/widgets/requests-toolbar'
-import { Box, VStack } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
+import { Box, VStack, useBreakpointValue } from '@chakra-ui/react'
+import { useCallback, useMemo, useState } from 'react'
 
 export function RequestsPage() {
   const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
@@ -24,7 +24,28 @@ export function RequestsPage() {
   const [columnFilters, setColumnFilters] = useState<RequestTableColumnFilters>(() =>
     createEmptyRequestTableColumnFilters(),
   )
-  const [visibleRequests, setVisibleRequests] = useState<RequestItem[]>([])
+  const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
+
+  const {
+    requests,
+    groupedRequests,
+    columnFilterOptions,
+    isLoading,
+    isRowsApplying,
+    sortState,
+    onSortChange,
+    error,
+    hasSourceData,
+    hasFilteredData,
+    reload,
+  } = useRequestsTableViewModel(
+    {
+      status: statusFilter,
+      onlyMine,
+      search: searchValue,
+    },
+    columnFilters,
+  )
 
   function resetFilters() {
     setStatusFilter(DEFAULT_REQUEST_STATUS_FILTER)
@@ -33,22 +54,23 @@ export function RequestsPage() {
     setColumnFilters(createEmptyRequestTableColumnFilters())
   }
 
-  const handleVisibleRequestsChange = useCallback((nextRows: RequestItem[]) => {
-    setVisibleRequests((prevRows) => {
-      const isSame =
-        prevRows.length === nextRows.length &&
-        prevRows.every((row, index) => row.id === nextRows[index]?.id)
+  const visibleRows = useMemo(() => {
+    if (isDesktop) {
+      return requests
+    }
 
-      if (isSame) {
-        return prevRows
-      }
+    return groupedRequests.flatMap((group) => group.items)
+  }, [groupedRequests, isDesktop, requests])
+  const exportRows = useMemo(() => {
+    if (isLoading || isRowsApplying) {
+      return []
+    }
 
-      return nextRows
-    })
-  }, [])
+    return visibleRows
+  }, [isLoading, isRowsApplying, visibleRows])
 
   const handleExportClick = useCallback(() => {
-    if (visibleRequests.length === 0) {
+    if (exportRows.length === 0) {
       toaster.success({
         title: 'Нечего экспортировать',
         description: 'По текущим фильтрам нет заявок',
@@ -57,14 +79,14 @@ export function RequestsPage() {
       return
     }
 
-    const result = exportRequestsToCsv(visibleRequests)
+    const result = exportRequestsToCsv(exportRows)
 
     toaster.success({
       title: 'Экспорт завершен',
       description: `Файл ${result.fileName}, строк: ${result.count}`,
       closable: true,
     })
-  }, [visibleRequests])
+  }, [exportRows])
 
   return (
     <Box minH="100vh" bg="bg.canvas" pb={{ base: '130', md: '0' }}>
@@ -75,7 +97,7 @@ export function RequestsPage() {
           statusFilter={statusFilter}
           onlyMine={onlyMine}
           onExportClick={handleExportClick}
-          isExportDisabled={visibleRequests.length === 0}
+          isExportDisabled={exportRows.length === 0}
           onSearchChange={setSearchValue}
           onStatusChange={setStatusFilter}
           onOnlyMineChange={setOnlyMine}
@@ -83,15 +105,20 @@ export function RequestsPage() {
         <Box display={{ base: 'none', md: 'block' }} h="1px" bg="border.subtle" />
         <Box mt={{ base: '0', md: '31px' }}>
           <RequestsTable
-            filters={{
-              status: statusFilter,
-              onlyMine,
-              search: searchValue,
-            }}
+            requests={requests}
+            groupedRequests={groupedRequests}
             columnFilters={columnFilters}
+            columnFilterOptions={columnFilterOptions}
+            sortState={sortState}
+            isLoading={isLoading}
+            isRowsApplying={isRowsApplying}
+            error={error}
+            hasSourceData={hasSourceData}
+            hasFilteredData={hasFilteredData}
+            onSortChange={onSortChange}
             onColumnFiltersChange={setColumnFilters}
+            onRetry={() => void reload()}
             onResetFilters={resetFilters}
-            onVisibleRequestsChange={handleVisibleRequestsChange}
           />
         </Box>
       </VStack>
