@@ -87,7 +87,7 @@ export const requestsMockDb: RequestItem[] = [
     pharmacyCity: 'Краснодар',
     pharmacyAddress: 'Трудовая 5',
     createdAt: '2025-11-19T09:10:00.000Z',
-    priority: 'medium',
+    priority: 'low',
     topic: 'Не работает принтер',
     category: 'ИТ',
     technician: 'Алексеев М.',
