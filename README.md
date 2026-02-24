@@ -91,9 +91,11 @@ pnpm preview
 ### 8. Фильтрация таблицы (доп. улучшение) — ✅
 - Файлы:
   - [`src/widgets/requests-table/model/use-requests-table-view-model.ts`](src/widgets/requests-table/model/use-requests-table-view-model.ts)
+  - [`src/widgets/requests-table/model/request-table-column-filters.ts`](src/widgets/requests-table/model/request-table-column-filters.ts)
+  - [`src/widgets/requests-table/ui/requests-table.desktop.tsx`](src/widgets/requests-table/ui/requests-table.desktop.tsx)
   - [`src/features/request-filters/ui/request-filters-row.tsx`](src/features/request-filters/ui/request-filters-row.tsx)
   - [`src/features/request-search/ui/request-search-field.tsx`](src/features/request-search/ui/request-search-field.tsx)
-- Комментарий: статус, «только мои», поиск по номеру/теме.
+- Комментарий: верхние фильтры (статус, «только мои», поиск) + колоночные фильтры для `Приоритет`, `Категория`, `Техник`.
 
 ### 9. Hover/focus/active эффекты — ✅
 - Файл: [`src/shared/config/theme/recipes/button.recipe.ts`](src/shared/config/theme/recipes/button.recipe.ts)
@@ -133,11 +135,15 @@ pnpm preview
 1. Открыть `http://127.0.0.1:4173/` и проверить desktop/mobile UI (через DevTools responsive mode).
 2. Переключать табы статусов и toggle «Показать только мои», проверить фильтрацию таблицы.
 3. Ввести текст в поиск, убедиться в фильтрации по номеру и теме.
-4. Нажать «Создать новую заявку», заполнить поля, прикрепить файл и отправить форму.
-5. После клика «Создать заявку» проверить:
+4. В desktop нажать иконки фильтра в заголовках:
+   - для `Приоритет`, `Категория`, `Техник` открывается popover c чекбоксами;
+   - для остальных колонок показывается подсказка `Фильтр для этой колонки не предусмотрен`.
+5. Убедиться, что колоночные фильтры работают совместно со статусом/поиском/«только мои» и сбрасываются кнопкой `Сбросить фильтры`.
+6. Нажать «Создать новую заявку», заполнить поля, прикрепить файл и отправить форму.
+7. После клика «Создать заявку» проверить:
    - модалка закрылась,
    - в консоли браузера появился лог `createRequestDraft`.
-6. Проверить мок-состояния данных по URL:
+8. Проверить мок-состояния данных по URL:
    - `http://127.0.0.1:4173/?requestsState=empty`
    - `http://127.0.0.1:4173/?requestsState=error`
    - `http://127.0.0.1:4173/?createRequestState=empty`
@@ -147,4 +153,4 @@ pnpm preview
 
 - Критичных расхождений верстки с макетом Figma в реализованных сценариях не выявлено.
 - Даты части строк в таблице генерируются динамически от текущего времени (через `createMockDate`), поэтому значения могут отличаться от статичного скриншота в макете.
-- Иконки фильтра в заголовках desktop-таблицы реализованы как визуальный элемент (без сортировки по клику), так как сортировка не входила в обязательные требования.
+- Иконка фильтра показана во всех заголовках desktop-таблицы по макету; рабочие фильтры доступны только для `Приоритет`, `Категория`, `Техник`.
