@@ -1,12 +1,15 @@
+import type { RequestItem } from '@/entities/request/model'
+import { exportRequestsToCsv } from '@/features/request-actions'
 import {
   DEFAULT_REQUEST_STATUS_FILTER,
   type RequestStatusFilterValue,
 } from '@/features/request-filters'
+import { toaster } from '@/shared/ui/toaster'
 import { Header } from '@/widgets/header'
 import { RequestsTable } from '@/widgets/requests-table'
 import { RequestsToolbar } from '@/widgets/requests-toolbar'
 import { Box, VStack } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export function RequestsPage() {
   const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
@@ -14,12 +17,46 @@ export function RequestsPage() {
   )
   const [onlyMine, setOnlyMine] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+  const [visibleRequests, setVisibleRequests] = useState<RequestItem[]>([])
 
   function resetFilters() {
     setStatusFilter(DEFAULT_REQUEST_STATUS_FILTER)
     setOnlyMine(false)
     setSearchValue('')
   }
+
+  const handleVisibleRequestsChange = useCallback((nextRows: RequestItem[]) => {
+    setVisibleRequests((prevRows) => {
+      const isSame =
+        prevRows.length === nextRows.length &&
+        prevRows.every((row, index) => row.id === nextRows[index]?.id)
+
+      if (isSame) {
+        return prevRows
+      }
+
+      return nextRows
+    })
+  }, [])
+
+  const handleExportClick = useCallback(() => {
+    if (visibleRequests.length === 0) {
+      toaster.success({
+        title: 'Нечего экспортировать',
+        description: 'По текущим фильтрам нет заявок',
+        closable: true,
+      })
+      return
+    }
+
+    const result = exportRequestsToCsv(visibleRequests)
+
+    toaster.success({
+      title: 'Экспорт завершен',
+      description: `Файл ${result.fileName}, строк: ${result.count}`,
+      closable: true,
+    })
+  }, [visibleRequests])
 
   return (
     <Box minH="100vh" bg="bg.canvas" pb={{ base: '130', md: '0' }}>
@@ -29,6 +66,8 @@ export function RequestsPage() {
           searchValue={searchValue}
           statusFilter={statusFilter}
           onlyMine={onlyMine}
+          onExportClick={handleExportClick}
+          isExportDisabled={visibleRequests.length === 0}
           onSearchChange={setSearchValue}
           onStatusChange={setStatusFilter}
           onOnlyMineChange={setOnlyMine}
@@ -42,6 +81,7 @@ export function RequestsPage() {
               search: searchValue,
             }}
             onResetFilters={resetFilters}
+            onVisibleRequestsChange={handleVisibleRequestsChange}
           />
         </Box>
       </VStack>

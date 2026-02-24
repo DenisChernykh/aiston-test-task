@@ -5,11 +5,13 @@ import { HStack } from '@chakra-ui/react'
 export type RequestActionsDesktopProps = {
   onExportClick?: () => void
   onCreateClick?: () => void
+  isExportDisabled?: boolean
 }
 
 export function RequestActionsDesktop({
   onExportClick,
   onCreateClick,
+  isExportDisabled = false,
 }: RequestActionsDesktopProps) {
   return (
     <HStack gap="13">
@@ -18,6 +20,7 @@ export function RequestActionsDesktop({
         size="desktopCompact"
         w="112px"
         onClick={onExportClick}
+        disabled={isExportDisabled}
         leftIcon={<ExportIcon boxSize="15px" />}
       >
         Экспорт

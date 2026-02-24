@@ -6,12 +6,12 @@ import { AppButton } from '@/shared/ui/button'
 import { Box, HStack, useBreakpointValue } from '@chakra-ui/react'
 import { useState } from 'react'
 
-const noop = () => undefined
-
 export type RequestsToolbarProps = {
   searchValue: string
   statusFilter: RequestStatusFilterValue
   onlyMine: boolean
+  onExportClick: () => void
+  isExportDisabled: boolean
   onSearchChange: (value: string) => void
   onStatusChange: (value: RequestStatusFilterValue) => void
   onOnlyMineChange: (value: boolean) => void
@@ -21,6 +21,8 @@ export function RequestsToolbar({
   searchValue,
   statusFilter,
   onlyMine,
+  onExportClick,
+  isExportDisabled,
   onSearchChange,
   onStatusChange,
   onOnlyMineChange,
@@ -42,7 +44,11 @@ export function RequestsToolbar({
             <Box flex="1" minW="0">
               <RequestSearchField value={searchValue} onChange={onSearchChange} />
             </Box>
-            <RequestActionsDesktop onExportClick={noop} onCreateClick={handleCreateClick} />
+            <RequestActionsDesktop
+              onExportClick={onExportClick}
+              isExportDisabled={isExportDisabled}
+              onCreateClick={handleCreateClick}
+            />
           </HStack>
 
           <RequestFiltersRow

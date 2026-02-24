@@ -1,3 +1,4 @@
+import type { RequestItem } from '@/entities/request/model'
 import {
   type RequestsTableFilters,
   useRequestsTableViewModel,
@@ -8,16 +9,30 @@ import { RequestsTableError } from '@/widgets/requests-table/ui/requests-table.e
 import { RequestsTableLoading } from '@/widgets/requests-table/ui/requests-table.loading'
 import { RequestsTableMobile } from '@/widgets/requests-table/ui/requests-table.mobile'
 import { useBreakpointValue } from '@chakra-ui/react'
+import { useEffect } from 'react'
 
 export type RequestsTableProps = {
   filters: RequestsTableFilters
   onResetFilters: () => void
+  onVisibleRequestsChange?: (rows: RequestItem[]) => void
 }
 
-export function RequestsTable({ filters, onResetFilters }: RequestsTableProps) {
+export function RequestsTable({
+  filters,
+  onResetFilters,
+  onVisibleRequestsChange,
+}: RequestsTableProps) {
   const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
   const { requests, groupedRequests, isLoading, error, hasSourceData, hasFilteredData, reload } =
     useRequestsTableViewModel(filters)
+
+  useEffect(() => {
+    if (!onVisibleRequestsChange) {
+      return
+    }
+
+    onVisibleRequestsChange(requests)
+  }, [onVisibleRequestsChange, requests])
 
   if (isLoading) {
     return <RequestsTableLoading />
