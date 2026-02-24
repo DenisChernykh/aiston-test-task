@@ -1,4 +1,5 @@
 import { RequestActionsDesktop, RequestActionsMobileFloating } from '@/features/request-actions'
+import { RequestCreateModal } from '@/features/request-create'
 import {
   DEFAULT_REQUEST_STATUS_FILTER,
   RequestFiltersRow,
@@ -15,26 +16,36 @@ export function RequestsToolbar() {
   const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
   const [searchValue, setSearchValue] = useState('')
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
+  const [createModalOpen, setCreateModalOpen] = useState(false)
   const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
     DEFAULT_REQUEST_STATUS_FILTER,
   )
   const [onlyMine, setOnlyMine] = useState(false)
 
+  function handleCreateClick() {
+    setMobileSearchOpen(false)
+    setCreateModalOpen(true)
+  }
+
   if (isDesktop) {
     return (
-      <Box mt="21" px="40">
-        <HStack gap="13" align="stretch">
-          <RequestSearchField value={searchValue} onChange={setSearchValue} />
-          <RequestActionsDesktop onExportClick={noop} onCreateClick={noop} />
-        </HStack>
+      <>
+        <Box mt="21" px="40">
+          <HStack gap="13" align="stretch">
+            <RequestSearchField value={searchValue} onChange={setSearchValue} />
+            <RequestActionsDesktop onExportClick={noop} onCreateClick={handleCreateClick} />
+          </HStack>
 
-        <RequestFiltersRow
-          status={statusFilter}
-          onlyMine={onlyMine}
-          onStatusChange={setStatusFilter}
-          onOnlyMineChange={setOnlyMine}
-        />
-      </Box>
+          <RequestFiltersRow
+            status={statusFilter}
+            onlyMine={onlyMine}
+            onStatusChange={setStatusFilter}
+            onOnlyMineChange={setOnlyMine}
+          />
+        </Box>
+
+        <RequestCreateModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
+      </>
     )
   }
 
@@ -56,9 +67,10 @@ export function RequestsToolbar() {
       >
         <RequestActionsMobileFloating
           onSearchClick={() => setMobileSearchOpen(true)}
-          onCreateClick={noop}
+          onCreateClick={handleCreateClick}
         />
       </Box>
+
       <Box
         position="fixed"
         insetX="0"
@@ -87,6 +99,8 @@ export function RequestsToolbar() {
           </AppButton>
         </HStack>
       </Box>
+
+      <RequestCreateModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
     </>
   )
 }
