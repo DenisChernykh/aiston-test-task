@@ -29,6 +29,7 @@ const config = defineConfig({
         },
         blue: {
           500: { value: '#2D60FD' },
+          550: { value: '#3B6BFF' },
         },
         green: {
           100: { value: '#A2E3A4' },
@@ -36,13 +37,22 @@ const config = defineConfig({
         },
         yellow: {
           100: { value: '#FFEBB3' },
+          650: { value: '#D9941F' },
           700: { value: '#CC892A' },
         },
         red: {
+          650: { value: '#C94848' },
           700: { value: '#B93C3C' },
         },
         purple: {
           100: { value: '#F0CDFA' },
+        },
+        mobileTable: {
+          codePillBg: { value: '#F3F3F3' },
+          secondaryText: { value: '#A4A4A4' },
+          readyBg: { value: '#A2E2A4' },
+          inProgressBg: { value: '#FFFEB3' },
+          mutedStatusBg: { value: '#E8E8E8' },
         },
         overlay: {
           scrim: { value: 'rgba(0,0,0,0.5)' },
@@ -71,9 +81,11 @@ const config = defineConfig({
         8: { value: '8px' },
         9: { value: '9px' },
         10: { value: '10px' },
+        11: { value: '11px' },
         12: { value: '12px' },
         13: { value: '13px' },
         14: { value: '14px' },
+        15: { value: '15px' },
         16: { value: '16px' },
         17: { value: '17px' },
         20: { value: '20px' },
@@ -106,10 +118,13 @@ const config = defineConfig({
         iconMd: { value: '18px' },
         iconLg: { value: '24px' },
         filterDivider: { value: '3px' },
+        mobileCodePill: { value: '24px' },
+        mobileTableRow: { value: '24px' },
       },
       fonts: {
         heading: { value: "'Inter', sans-serif" },
         body: { value: "'Inter', sans-serif" },
+        code: { value: "'Golos Text', 'Inter', sans-serif" },
       },
       fontSizes: {
         xs: { value: '12px' },
@@ -138,7 +153,9 @@ const config = defineConfig({
         titleMobile: { value: '-0.2px' },
         normal: { value: '0px' },
         compact: { value: '0.28px' },
+        slaEmpty: { value: '0.24px' },
         codeTag: { value: '0.96px' },
+        codePillMobile: { value: '0.7px' },
       },
 
       durations: {
@@ -160,11 +177,13 @@ const config = defineConfig({
           field: { value: '{colors.neutral.0}' },
           overlay: { value: '{colors.overlay.scrim}' },
           mobileFloating: { value: '{colors.neutral.75}' },
+          mobileTableList: { value: '{colors.neutral.50}' },
         },
         text: {
           primary: { value: '{colors.neutral.900}' },
           mobilePrimary: { value: '{colors.neutral.901}' },
           secondary: { value: '{colors.neutral.450}' },
+          mobileTableSecondary: { value: '{colors.mobileTable.secondaryText}' },
           muted: { value: '{colors.neutral.400}' },
           inverse: { value: '{colors.neutral.white}' },
           success: { value: '{colors.green.700}' },
@@ -184,6 +203,9 @@ const config = defineConfig({
           inProgressBg: { value: '{colors.yellow.100}' },
           doneBg: { value: '{colors.green.100}' },
           closedBg: { value: '{colors.neutral.50}' },
+          mobileTableInProgressBg: { value: '{colors.mobileTable.inProgressBg}' },
+          mobileTableReadyBg: { value: '{colors.mobileTable.readyBg}' },
+          mobileTableMutedBg: { value: '{colors.mobileTable.mutedStatusBg}' },
           fg: { value: '{colors.neutral.900}' },
         },
 
@@ -193,7 +215,12 @@ const config = defineConfig({
           medium: { value: '{colors.yellow.700}' },
           low: { value: '{colors.blue.500}' },
         },
-
+        priorityIcon: {
+          critical: { value: '{colors.red.650}' },
+          high: { value: '{colors.red.650}' },
+          medium: { value: '{colors.yellow.650}' },
+          low: { value: '{colors.blue.550}' },
+        },
         sla: {
           ok: { value: '{colors.green.700}' },
           breach: { value: '{colors.red.700}' },

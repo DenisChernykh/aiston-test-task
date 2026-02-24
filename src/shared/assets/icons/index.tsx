@@ -105,3 +105,82 @@ export function FilterAltIcon(props: IconProps) {
     </chakra.svg>
   )
 }
+
+export function DotUpChevronIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M7.4 15.375L6 13.975L12 7.97501L18 13.975L16.6 15.375L12 10.8L7.4 15.375Z"
+        fill="currentColor"
+      />
+    </chakra.svg>
+  )
+}
+
+export function DotDoubleChevronIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M7.4 18.3766L6 16.9766L12 10.9766L18 16.9766L16.6 18.3766L12 13.8016L7.4 18.3766ZM7.4 12.3766L6 10.9766L12 4.97656L18 10.9766L16.6 12.3766L12 7.80156L7.4 12.3766Z"
+        fill="currentColor"
+      />
+    </chakra.svg>
+  )
+}
+
+export function DotDiamondIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M12 7.5L16.5 12L12 16.5L7.5 12L12 7.5Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+    </chakra.svg>
+  )
+}
+
+export function SlaCheckIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
+      <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M4.4 7.1L6.2 8.9L9.7 5.4"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </chakra.svg>
+  )
+}
+
+export function SlaAlertIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
+      <circle cx="7" cy="7" r="5.25" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M7 4.2V7.9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="7" cy="9.9" r="0.9" fill="currentColor" />
+    </chakra.svg>
+  )
+}
+
+export function SlaNeutralDashIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
+      <path d="M3.5 7H10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </chakra.svg>
+  )
+}
+
+export function SlaNeutralClockIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 14 14" fill="none" {...props}>
+      <circle cx="9" cy="7" r="4.75" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M9 4.8V7L10.6 8.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M2 4.1H4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M2 9.1H4.1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </chakra.svg>
+  )
+}

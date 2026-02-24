@@ -14,9 +14,15 @@ importers:
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.2.14)(react@19.2.4)
+      '@fontsource-variable/golos-text':
+        specifier: ^5.2.7
+        version: 5.2.8
       '@fontsource/inter':
         specifier: ^5.2.8
         version: 5.2.8
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
       react:
         specifier: ^19.2.0
         version: 19.2.4
@@ -623,6 +629,9 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@fontsource-variable/golos-text@5.2.8':
+    resolution: {integrity: sha512-cLT8Gu9tSQTOjfPY+qnrqQwafUUJkZu0s9hTbQbtaeknTyV36c/FQc5hvTRvgeUOT4cp/Xf0dkHdZatwj3g2Nw==}
 
   '@fontsource/inter@5.2.8':
     resolution: {integrity: sha512-P6r5WnJoKiNVV+zvW2xM13gNdFhAEpQ9dQJHt3naLvfg+LkF2ldgSLiF4T41lf1SQCM9QmkqPTn4TH568IRagg==}
@@ -1270,6 +1279,9 @@ packages:
   data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
+
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -2512,6 +2524,8 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
+  '@fontsource-variable/golos-text@5.2.8': {}
+
   '@fontsource/inter@5.2.8': {}
 
   '@humanfs/core@0.19.1': {}
@@ -3454,6 +3468,8 @@ snapshots:
   csstype@3.2.3: {}
 
   data-uri-to-buffer@4.0.1: {}
+
+  date-fns@4.1.0: {}
 
   debug@4.4.3:
     dependencies:

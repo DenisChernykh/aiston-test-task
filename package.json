@@ -18,6 +18,8 @@
     "@chakra-ui/react": "^3.33.0",
     "@emotion/react": "^11.14.0",
     "@fontsource/inter": "^5.2.8",
+    "@fontsource-variable/golos-text": "^5.2.7",
+    "date-fns": "^4.1.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
