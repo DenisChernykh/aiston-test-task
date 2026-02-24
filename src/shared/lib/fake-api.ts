@@ -9,3 +9,11 @@ export function resolveWithDelay<T>(data: T, delayMs = 250): Promise<T> {
     }, delayMs)
   })
 }
+
+export function rejectWithDelay<TError>(error: TError, delayMs = 250): Promise<never> {
+  return new Promise((_, reject) => {
+    window.setTimeout(() => {
+      reject(cloneData(error))
+    }, delayMs)
+  })
+}

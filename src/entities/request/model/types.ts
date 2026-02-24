@@ -1,6 +1,8 @@
-export type RequestStatus = 'new' | 'inProgress' | 'done' | 'closed'
+export type RequestStatus = 'new' | 'inProgress' | 'ready' | 'closed' | 'paused' | 'awaitingParts'
 
 export type RequestPriority = 'critical' | 'high' | 'medium' | 'low'
+
+export type RequestSlaState = 'ok' | 'neutral' | 'breach'
 
 export type RequestItem = {
   id: string
@@ -14,7 +16,9 @@ export type RequestItem = {
   category: string
   technician: string | null
   reactionTime: string | null
+  reactionState: RequestSlaState
   resolutionTime: string | null
+  resolutionState: RequestSlaState
   status: RequestStatus
 }
 
