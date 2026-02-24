@@ -1,5 +1,7 @@
 import {
-  IMAGE_ACCEPT,
+  ATTACHMENTS_ACCEPT,
+  ATTACHMENTS_MAX_FILES,
+  getAttachmentRejectionMessage,
   type RequestCreateFilesFieldProps,
 } from '@/features/request-create/ui/request-create-form.constants'
 import { AddIcon } from '@/shared/assets/icons'
@@ -18,9 +20,20 @@ export function RequestCreateMobileAttachField({
         <VStack align="stretch" gap="6">
           <FileUpload.Root
             acceptedFiles={field.value}
-            onFileChange={(details) => field.onChange(details.acceptedFiles)}
-            accept={IMAGE_ACCEPT}
-            maxFiles={10}
+            onFileChange={(details) => {
+              field.onChange(details.acceptedFiles)
+
+              const rejectionMessage = getAttachmentRejectionMessage(details.rejectedFiles)
+
+              if (rejectionMessage) {
+                form.setError('attachments', { type: 'manual', message: rejectionMessage })
+                return
+              }
+
+              form.clearErrors('attachments')
+            }}
+            accept={ATTACHMENTS_ACCEPT}
+            maxFiles={ATTACHMENTS_MAX_FILES}
             disabled={disabled}
           >
             <FileUpload.HiddenInput />
@@ -53,7 +66,7 @@ export function RequestCreateMobileAttachField({
           {field.value.length > 0 ? (
             <Box px="2">
               <Text fontSize="xs" lineHeight="tight" color="text.secondary">
-                Выбрано изображений: {field.value.length}
+                Выбрано файлов: {field.value.length}
               </Text>
             </Box>
           ) : null}

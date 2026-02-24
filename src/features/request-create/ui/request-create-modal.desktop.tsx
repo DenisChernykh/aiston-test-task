@@ -7,7 +7,7 @@ import {
 } from '@/features/request-create/ui/request-create-form-fields'
 import { CloseSmallIcon } from '@/shared/assets/icons'
 import { AppButton } from '@/shared/ui/button'
-import { Dialog, HStack, IconButton, Spinner, Text, VStack } from '@chakra-ui/react'
+import { Box, Dialog, HStack, Spinner, Text, VStack } from '@chakra-ui/react'
 import type { FormEventHandler } from 'react'
 import type { UseFormReturn } from 'react-hook-form'
 
@@ -80,26 +80,30 @@ export function RequestCreateModalDesktop({
           gap="32"
         >
           <Dialog.Header p="0">
-            <HStack w="full" align="center" justify="space-between">
+            <Box w="full" position="relative" minH="29px">
               <Dialog.Title fontSize="2xl" lineHeight="lg" fontWeight="medium" color="text.primary">
                 Создание заявки
               </Dialog.Title>
 
-              <Dialog.CloseTrigger asChild>
-                <IconButton
-                  aria-label="Закрыть"
-                  variant="ghost"
-                  minW="unset"
-                  w="modalCloseIcon"
-                  h="modalCloseIcon"
-                  p="0"
-                  color="text.secondary"
-                  _hover={{ bg: 'transparent', color: 'text.primary' }}
-                >
-                  <CloseSmallIcon w="modalCloseIcon" h="modalCloseIcon" />
-                </IconButton>
+              <Dialog.CloseTrigger
+                aria-label="Закрыть"
+                position="absolute"
+                right="10"
+                top="50%"
+                transform="translateY(-50%)"
+                minW="unset"
+                minH="unset"
+                w="modalCloseIcon"
+                h="modalCloseIcon"
+                p="0"
+                bg="transparent"
+                border="none"
+                color="text.secondary"
+                _hover={{ bg: 'transparent', color: 'text.primary' }}
+              >
+                <CloseSmallIcon w="modalCloseIcon" h="modalCloseIcon" />
               </Dialog.CloseTrigger>
-            </HStack>
+            </Box>
           </Dialog.Header>
 
           <Dialog.Body p="0">

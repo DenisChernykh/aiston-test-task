@@ -58,6 +58,20 @@ export function ChevronDownIcon(props: IconProps) {
   )
 }
 
+export function ChevronDownStrokeIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" display="block" {...props}>
+      <path
+        d="M7 10L12 15L17 10"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </chakra.svg>
+  )
+}
+
 export function UserCircleIcon(props: IconProps) {
   return (
     <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>

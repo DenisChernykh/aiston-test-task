@@ -1,5 +1,8 @@
 import type { RequestCreateFormFieldsSharedProps } from '@/features/request-create/ui/request-create-form.constants'
-import { RequestNativeSelectField } from '@/features/request-create/ui/request-native-select-field'
+import {
+  RequestDesktopSelectField,
+  RequestNativeSelectField,
+} from '@/features/request-create/ui/request-native-select-field'
 import { Checkbox, VStack } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
 
@@ -19,22 +22,41 @@ export function RequestCreateLocationFields({
         name="pharmacyId"
         control={form.control}
         render={({ field, fieldState }) => (
-          <RequestNativeSelectField
-            label="Аптека"
-            name={field.name}
-            value={field.value}
-            onBlur={field.onBlur}
-            onChange={field.onChange}
-            options={options.pharmacies}
-            placeholder="Выберите аптеку от которой исходит заявка"
-            disabled={disabled}
-            invalid={fieldState.invalid}
-            errorText={fieldState.error?.message}
-            h={isDesktop ? 'fieldDesktop' : 'fieldMobile'}
-            radius={radius}
-            fontSize={fontSize}
-            lineHeight={lineHeight}
-          />
+          isDesktop ? (
+            <RequestDesktopSelectField
+              label="Аптека"
+              name={field.name}
+              value={field.value}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              options={options.pharmacies}
+              placeholder="Выберите аптеку от которой исходит заявка"
+              disabled={disabled}
+              invalid={fieldState.invalid}
+              errorText={fieldState.error?.message}
+              h="fieldDesktop"
+              radius={radius}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+            />
+          ) : (
+            <RequestNativeSelectField
+              label="Аптека"
+              name={field.name}
+              value={field.value}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              options={options.pharmacies}
+              placeholder="Выберите аптеку от которой исходит заявка"
+              disabled={disabled}
+              invalid={fieldState.invalid}
+              errorText={fieldState.error?.message}
+              h="fieldMobile"
+              radius={radius}
+              fontSize={fontSize}
+              lineHeight={lineHeight}
+            />
+          )
         )}
       />
 
@@ -43,22 +65,41 @@ export function RequestCreateLocationFields({
           name="categoryId"
           control={form.control}
           render={({ field, fieldState }) => (
-            <RequestNativeSelectField
-              label="Категория заявки"
-              name={field.name}
-              value={field.value}
-              onBlur={field.onBlur}
-              onChange={field.onChange}
-              options={options.categories}
-              placeholder="Холодильники, кондиционеры или другое"
-              disabled={disabled}
-              invalid={fieldState.invalid}
-              errorText={fieldState.error?.message}
-              h={isDesktop ? 'fieldCategoryDesktop' : 'fieldMobile'}
-              radius={radius}
-              fontSize={fontSize}
-              lineHeight={lineHeight}
-            />
+            isDesktop ? (
+              <RequestDesktopSelectField
+                label="Категория заявки"
+                name={field.name}
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                options={options.categories}
+                placeholder="Холодильники, кондиционеры или другое"
+                disabled={disabled}
+                invalid={fieldState.invalid}
+                errorText={fieldState.error?.message}
+                h="fieldCategoryDesktop"
+                radius={radius}
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+              />
+            ) : (
+              <RequestNativeSelectField
+                label="Категория заявки"
+                name={field.name}
+                value={field.value}
+                onBlur={field.onBlur}
+                onChange={field.onChange}
+                options={options.categories}
+                placeholder="Холодильники, кондиционеры или другое"
+                disabled={disabled}
+                invalid={fieldState.invalid}
+                errorText={fieldState.error?.message}
+                h="fieldMobile"
+                radius={radius}
+                fontSize={fontSize}
+                lineHeight={lineHeight}
+              />
+            )
           )}
         />
 
@@ -81,7 +122,18 @@ export function RequestCreateLocationFields({
                 borderColor="border.default"
                 borderRadius="sm"
                 bg="bg.field"
-              />
+                color="bg.field"
+                _checked={{
+                  bg: 'text.primary',
+                  borderColor: 'text.primary',
+                }}
+                _indeterminate={{
+                  bg: 'text.primary',
+                  borderColor: 'text.primary',
+                }}
+              >
+                <Checkbox.Indicator />
+              </Checkbox.Control>
               <Checkbox.Label
                 fontSize={isDesktop ? 'md' : 'lg'}
                 lineHeight="sm"

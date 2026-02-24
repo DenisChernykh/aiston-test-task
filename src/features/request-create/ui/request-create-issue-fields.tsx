@@ -1,12 +1,40 @@
+import type { PriorityOption } from '@/entities/request/model'
+import { RequestPriorityIcon } from '@/entities/request/ui/request-priority-indicator'
 import {
   DESCRIPTION_PLACEHOLDER,
   TOPIC_PLACEHOLDER,
   type RequestCreateFormFieldsSharedProps,
 } from '@/features/request-create/ui/request-create-form.constants'
-import { RequestNativeSelectField } from '@/features/request-create/ui/request-native-select-field'
+import {
+  RequestDesktopSelectField,
+  RequestNativeSelectField,
+} from '@/features/request-create/ui/request-native-select-field'
 import { RequestTextareaField } from '@/features/request-create/ui/request-textarea-field'
-import { VStack } from '@chakra-ui/react'
+import { HStack, Text, VStack } from '@chakra-ui/react'
 import { Controller } from 'react-hook-form'
+
+function PriorityOptionContent({ option }: { option: PriorityOption }) {
+  return (
+    <HStack gap="8" align="center" minW="0">
+      <RequestPriorityIcon priority={option.value} boxSize="24px" />
+      <Text
+        fontSize="xs"
+        lineHeight="tight"
+        minW="0"
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      >
+        <Text as="span" fontWeight="medium" color="text.primary">
+          {option.label}:
+        </Text>{' '}
+        <Text as="span" color="text.secondary">
+          {option.hint}
+        </Text>
+      </Text>
+    </HStack>
+  )
+}
 
 export function RequestCreateIssueFields({
   form,
@@ -46,22 +74,42 @@ export function RequestCreateIssueFields({
         name="priority"
         control={form.control}
         render={({ field, fieldState }) => (
-          <RequestNativeSelectField
-            label="Приоритет"
-            name={field.name}
-            value={field.value}
-            onBlur={field.onBlur}
-            onChange={field.onChange}
-            options={options.priorities}
-            disabled={disabled}
-            invalid={fieldState.invalid}
-            errorText={fieldState.error?.message}
-            h={isDesktop ? 'fieldPriorityDesktop' : 'fieldPriorityMobile'}
-            radius={radius}
-            fontSize="xs"
-            lineHeight="tight"
-            renderOptionLabel={(item) => `◇ ${item.label}: ${item.hint}`}
-          />
+          isDesktop ? (
+            <RequestDesktopSelectField
+              label="Приоритет"
+              name={field.name}
+              value={field.value}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              options={options.priorities}
+              disabled={disabled}
+              invalid={fieldState.invalid}
+              errorText={fieldState.error?.message}
+              h="fieldPriorityDesktop"
+              radius={radius}
+              fontSize="xs"
+              lineHeight="tight"
+              renderDesktopValue={(option) => <PriorityOptionContent option={option} />}
+              renderDesktopOption={(option) => <PriorityOptionContent option={option} />}
+            />
+          ) : (
+            <RequestNativeSelectField
+              label="Приоритет"
+              name={field.name}
+              value={field.value}
+              onBlur={field.onBlur}
+              onChange={field.onChange}
+              options={options.priorities}
+              disabled={disabled}
+              invalid={fieldState.invalid}
+              errorText={fieldState.error?.message}
+              h="fieldPriorityMobile"
+              radius={radius}
+              fontSize="xs"
+              lineHeight="tight"
+              renderOptionLabel={(item) => `◇ ${item.label}: ${item.hint}`}
+            />
+          )
         )}
       />
 
