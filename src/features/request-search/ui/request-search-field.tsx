@@ -24,9 +24,7 @@ export function RequestSearchField({
         justifyContent: 'flex-start',
         ps: '10',
       }}
-      startElement={
-        <SearchIcon w="iconLg" h="iconLg" color="text.muted" />
-      }
+      startElement={<SearchIcon w="iconLg" h="iconLg" color="text.muted" />}
     >
       <Input
         value={value ?? ''}

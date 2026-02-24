@@ -37,10 +37,7 @@ function getEmptySlaView(): SlaView {
   }
 }
 
-function getStaticSlaView({
-  value,
-  kind,
-}: Pick<RequestSlaCellProps, 'value' | 'kind'>): SlaView {
+function getStaticSlaView({ value, kind }: Pick<RequestSlaCellProps, 'value' | 'kind'>): SlaView {
   if (!value) {
     return getEmptySlaView()
   }
@@ -68,7 +65,9 @@ function getStaticSlaView({
 }
 
 function isLiveMode({ kind, status }: Pick<RequestSlaCellProps, 'kind' | 'status'>): boolean {
-  return (kind === 'reaction' && status === 'new') || (kind === 'resolution' && status === 'inProgress')
+  return (
+    (kind === 'reaction' && status === 'new') || (kind === 'resolution' && status === 'inProgress')
+  )
 }
 
 function formatToTimer(seconds: number): string {

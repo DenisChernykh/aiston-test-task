@@ -111,13 +111,7 @@ export function useRequestsTableViewModel(
     return () => {
       window.clearTimeout(timeoutId)
     }
-  }, [
-    appliedFiltersKey,
-    currentFiltersKey,
-    filters.onlyMine,
-    filters.search,
-    filters.status,
-  ])
+  }, [appliedFiltersKey, currentFiltersKey, filters.onlyMine, filters.search, filters.status])
 
   const sortedRequests = sortByCreatedAtDesc(requests)
   const statusFilteredRequests = filterByStatus(sortedRequests, appliedFilters.status)

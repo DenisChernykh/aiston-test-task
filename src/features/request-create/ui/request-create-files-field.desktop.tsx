@@ -5,7 +5,7 @@ import {
   type RequestCreateFilesFieldProps,
 } from '@/features/request-create/ui/request-create-form.constants'
 import { UploadImageIcon } from '@/shared/assets/icons'
-import { Box, Field, FileUpload, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, Field, FileUpload, HStack, Image, Text, VStack } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { Controller } from 'react-hook-form'
 
@@ -45,8 +45,7 @@ function AttachmentPreview({ file }: { file: File }) {
   return (
     <HStack align="center" gap="8">
       {isImage && imageUrl ? (
-        <Box
-          as="img"
+        <Image
           src={imageUrl}
           alt={file.name}
           w={ATTACHMENT_PREVIEW_SIZE}

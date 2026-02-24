@@ -1,9 +1,6 @@
 import { RequestActionsDesktop, RequestActionsMobileFloating } from '@/features/request-actions'
 import { RequestCreateModal } from '@/features/request-create'
-import {
-  RequestFiltersRow,
-  type RequestStatusFilterValue,
-} from '@/features/request-filters'
+import { RequestFiltersRow, type RequestStatusFilterValue } from '@/features/request-filters'
 import { RequestSearchField } from '@/features/request-search'
 import { AppButton } from '@/shared/ui/button'
 import { Box, HStack, useBreakpointValue } from '@chakra-ui/react'
