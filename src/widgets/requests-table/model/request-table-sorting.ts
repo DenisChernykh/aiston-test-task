@@ -7,6 +7,23 @@ export type RequestTableSortState = {
   direction: RequestTableSortDirection
 } | null
 
+export function getNextSortState(
+  prevSortState: RequestTableSortState,
+  column: RequestTableSortableColumn,
+): NonNullable<RequestTableSortState> {
+  if (!prevSortState || prevSortState.column !== column) {
+    return {
+      column,
+      direction: 'asc',
+    }
+  }
+
+  return {
+    column,
+    direction: prevSortState.direction === 'asc' ? 'desc' : 'asc',
+  }
+}
+
 const PRIORITY_SORT_RANK: Record<RequestPriority, number> = {
   low: 0,
   medium: 1,

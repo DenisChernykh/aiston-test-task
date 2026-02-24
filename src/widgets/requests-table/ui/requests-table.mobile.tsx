@@ -3,10 +3,11 @@ import { RequestCodePill } from '@/entities/request/ui/request-code-pill'
 import { RequestSlaCell } from '@/entities/request/ui/request-sla-cell'
 import { RequestStatusBadge } from '@/entities/request/ui/request-status-badge'
 import type { RequestsDateGroup } from '@/widgets/requests-table/model/group-requests-by-date'
-import { Box, HStack, Text, VStack } from '@chakra-ui/react'
+import { Box, HStack, Skeleton, SkeletonText, Text, VStack } from '@chakra-ui/react'
 
 export type RequestsTableMobileProps = {
   groups: RequestsDateGroup[]
+  isRowsLoading?: boolean
 }
 
 export type MobileRequestCardProps = {
@@ -112,12 +113,38 @@ function RequestsTableMobileGroupSection({ group }: MobileGroupSectionProps) {
   )
 }
 
-export function RequestsTableMobile({ groups }: RequestsTableMobileProps) {
+function MobileRowsSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 4 }).map((_, index) => (
+        <Box
+          key={`mobile-rows-loading-${index}`}
+          borderWidth="1px"
+          borderColor="border.muted"
+          borderRadius="lg"
+          px="14"
+          py="15"
+          bg="bg.canvas"
+        >
+          <SkeletonText noOfLines={2} gap="3" />
+          <HStack mt="12" justify="space-between">
+            <Skeleton h="24px" w="88px" />
+            <Skeleton h="14px" w="76px" />
+          </HStack>
+        </Box>
+      ))}
+    </>
+  )
+}
+
+export function RequestsTableMobile({ groups, isRowsLoading = false }: RequestsTableMobileProps) {
   return (
     <VStack align="stretch" px="15" pb="130" gap="12" bg="bg.mobileTableList">
-      {groups.map((group) => (
-        <RequestsTableMobileGroupSection key={group.key} group={group} />
-      ))}
+      {isRowsLoading ? (
+        <MobileRowsSkeleton />
+      ) : (
+        groups.map((group) => <RequestsTableMobileGroupSection key={group.key} group={group} />)
+      )}
     </VStack>
   )
 }
