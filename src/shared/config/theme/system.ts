@@ -134,7 +134,7 @@ const config = defineConfig({
       fonts: {
         heading: { value: "'Inter', sans-serif" },
         body: { value: "'Inter', sans-serif" },
-        code: { value: "'Golos Text', 'Inter', sans-serif" },
+        code: { value: "'Golos Text Variable', 'Inter', sans-serif" },
       },
       fontSizes: {
         xs: { value: '12px' },
