@@ -1,9 +1,5 @@
 import type { RequestItem } from '@/entities/request/model'
-import {
-  sortRequests,
-  type RequestTableSortableColumn,
-  type RequestTableSortState,
-} from '@/widgets/requests-table/model/request-table-sorting'
+import type { RequestTableColumnFilters } from '@/widgets/requests-table/model/request-table-column-filters'
 import {
   type RequestsTableFilters,
   useRequestsTableViewModel,
@@ -18,18 +14,16 @@ import { useEffect } from 'react'
 
 export type RequestsTableProps = {
   filters: RequestsTableFilters
-  sortState: RequestTableSortState
-  isSortApplying?: boolean
-  onSortChange: (column: RequestTableSortableColumn) => void
+  columnFilters: RequestTableColumnFilters
+  onColumnFiltersChange: (value: RequestTableColumnFilters) => void
   onResetFilters: () => void
   onVisibleRequestsChange?: (rows: RequestItem[]) => void
 }
 
 export function RequestsTable({
   filters,
-  sortState,
-  isSortApplying = false,
-  onSortChange,
+  columnFilters,
+  onColumnFiltersChange,
   onResetFilters,
   onVisibleRequestsChange,
 }: RequestsTableProps) {
@@ -37,24 +31,25 @@ export function RequestsTable({
   const {
     requests,
     groupedRequests,
+    columnFilterOptions,
     isLoading,
-    isFiltersApplying,
+    isRowsApplying,
+    sortState,
+    onSortChange,
     error,
     hasSourceData,
     hasFilteredData,
     reload,
-  } = useRequestsTableViewModel(filters)
-  const desktopRows = isDesktop ? sortRequests(requests, sortState) : requests
-  const visibleRows = isDesktop ? desktopRows : requests
-  const isRowsLoading = isDesktop && (isSortApplying || isFiltersApplying)
+  } = useRequestsTableViewModel(filters, columnFilters)
+  const visibleRows = isDesktop ? requests : groupedRequests.flatMap((group) => group.items)
 
   useEffect(() => {
-    if (!onVisibleRequestsChange || isLoading || isRowsLoading) {
+    if (!onVisibleRequestsChange || isLoading || isRowsApplying) {
       return
     }
 
     onVisibleRequestsChange(visibleRows)
-  }, [isLoading, isRowsLoading, onVisibleRequestsChange, visibleRows])
+  }, [isLoading, isRowsApplying, onVisibleRequestsChange, visibleRows])
 
   if (isLoading) {
     return <RequestsTableLoading />
@@ -68,13 +63,20 @@ export function RequestsTable({
     return <RequestsTableEmpty mode="noData" />
   }
 
-  if (isRowsLoading) {
+  if (isRowsApplying) {
+    if (!isDesktop) {
+      return <RequestsTableMobile groups={groupedRequests} isRowsLoading />
+    }
+
     return (
       <RequestsTableDesktop
-        requests={desktopRows}
+        requests={requests}
         sortState={sortState}
         isRowsLoading
         onSortChange={onSortChange}
+        columnFilters={columnFilters}
+        filterOptions={columnFilterOptions}
+        onColumnFiltersChange={onColumnFiltersChange}
       />
     )
   }
@@ -86,10 +88,13 @@ export function RequestsTable({
   if (isDesktop) {
     return (
       <RequestsTableDesktop
-        requests={desktopRows}
+        requests={requests}
         sortState={sortState}
-        isRowsLoading={isRowsLoading}
+        isRowsLoading={false}
         onSortChange={onSortChange}
+        columnFilters={columnFilters}
+        filterOptions={columnFilterOptions}
+        onColumnFiltersChange={onColumnFiltersChange}
       />
     )
   }

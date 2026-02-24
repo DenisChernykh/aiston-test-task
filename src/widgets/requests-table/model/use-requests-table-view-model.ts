@@ -1,13 +1,26 @@
 import { useRequests, type RequestItem } from '@/entities/request/model'
 import { useCurrentUser } from '@/entities/user'
 import type { RequestStatusFilterValue } from '@/features/request-filters/model/request-filter-status'
+import { waitWithDelay } from '@/shared/lib/fake-api'
+import {
+  applyRequestTableColumnFilters,
+  buildRequestTableColumnFilterOptions,
+  type RequestTableColumnFilterOptions,
+  type RequestTableColumnFilters,
+} from '@/widgets/requests-table/model/request-table-column-filters'
 import {
   groupRequestsByDate,
   type RequestsDateGroup,
 } from '@/widgets/requests-table/model/group-requests-by-date'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  getNextSortState,
+  sortRequests,
+  type RequestTableSortState,
+  type RequestTableSortableColumn,
+} from '@/widgets/requests-table/model/request-table-sorting'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-const FILTERS_APPLY_DELAY_MS = 350
+const APPLY_DELAY_MS = 220
 
 export type RequestsTableFilters = {
   status: RequestStatusFilterValue
@@ -18,12 +31,21 @@ export type RequestsTableFilters = {
 export type UseRequestsTableViewModelResult = {
   requests: RequestItem[]
   groupedRequests: RequestsDateGroup[]
+  columnFilterOptions: RequestTableColumnFilterOptions
   isLoading: boolean
-  isFiltersApplying: boolean
+  isRowsApplying: boolean
+  sortState: RequestTableSortState
+  onSortChange: (column: RequestTableSortableColumn) => void
   error: string | null
   hasSourceData: boolean
   hasFilteredData: boolean
   reload: () => Promise<void>
+}
+
+type AppliedTableState = {
+  filters: RequestsTableFilters
+  columnFilters: RequestTableColumnFilters
+  sortState: RequestTableSortState
 }
 
 function sortByCreatedAtDesc(items: RequestItem[]): RequestItem[] {
@@ -71,8 +93,53 @@ function filterBySearch(items: RequestItem[], search: string): RequestItem[] {
   })
 }
 
+function serializeFilters(filters: RequestsTableFilters): string {
+  return `${filters.status}|${filters.onlyMine ? '1' : '0'}|${filters.search.trim()}`
+}
+
+function serializeColumnFilters(columnFilters: RequestTableColumnFilters): string {
+  const serializedPriority = [...new Set(columnFilters.priority)].join(',')
+  const serializedCategory = [...new Set(columnFilters.category)]
+    .sort((left, right) => left.localeCompare(right, 'ru'))
+    .join(',')
+  const serializedTechnician = [...new Set(columnFilters.technician)]
+    .sort((left, right) => left.localeCompare(right, 'ru'))
+    .join(',')
+
+  return `${serializedPriority}|${serializedCategory}|${serializedTechnician}`
+}
+
+function serializeSort(sortState: RequestTableSortState): string {
+  if (!sortState) {
+    return 'none'
+  }
+
+  return `${sortState.column}|${sortState.direction}`
+}
+
+function getTableStateKey(state: AppliedTableState): string {
+  return `${serializeFilters(state.filters)}|${serializeColumnFilters(state.columnFilters)}|${serializeSort(state.sortState)}`
+}
+
+function cloneFilters(filters: RequestsTableFilters): RequestsTableFilters {
+  return {
+    status: filters.status,
+    onlyMine: filters.onlyMine,
+    search: filters.search,
+  }
+}
+
+function cloneColumnFilters(columnFilters: RequestTableColumnFilters): RequestTableColumnFilters {
+  return {
+    priority: [...columnFilters.priority],
+    category: [...columnFilters.category],
+    technician: [...columnFilters.technician],
+  }
+}
+
 export function useRequestsTableViewModel(
   filters: RequestsTableFilters,
+  columnFilters: RequestTableColumnFilters,
 ): UseRequestsTableViewModelResult {
   const {
     requests,
@@ -86,60 +153,94 @@ export function useRequestsTableViewModel(
     error: currentUserError,
     reload: reloadCurrentUser,
   } = useCurrentUser()
-  const [appliedFilters, setAppliedFilters] = useState<RequestsTableFilters>(() => filters)
+  const [sortState, setSortState] = useState<RequestTableSortState>(null)
+  const [appliedState, setAppliedState] = useState<AppliedTableState>(() => ({
+    filters: cloneFilters(filters),
+    columnFilters: cloneColumnFilters(columnFilters),
+    sortState: null,
+  }))
+  const applySequenceRef = useRef(0)
 
-  const currentFiltersKey = useMemo(() => {
-    return `${filters.status}|${filters.onlyMine ? '1' : '0'}|${filters.search.trim()}`
-  }, [filters.onlyMine, filters.search, filters.status])
+  const desiredState = useMemo<AppliedTableState>(() => {
+    return {
+      filters: cloneFilters(filters),
+      columnFilters: cloneColumnFilters(columnFilters),
+      sortState,
+    }
+  }, [columnFilters, filters, sortState])
 
-  const appliedFiltersKey = useMemo(() => {
-    return `${appliedFilters.status}|${appliedFilters.onlyMine ? '1' : '0'}|${appliedFilters.search.trim()}`
-  }, [appliedFilters.onlyMine, appliedFilters.search, appliedFilters.status])
+  const desiredKey = useMemo(() => {
+    return getTableStateKey(desiredState)
+  }, [desiredState])
+
+  const appliedKey = useMemo(() => {
+    return getTableStateKey(appliedState)
+  }, [appliedState])
+
+  const onSortChange = useCallback((column: RequestTableSortableColumn) => {
+    setSortState((prevSortState) => getNextSortState(prevSortState, column))
+  }, [])
 
   useEffect(() => {
-    if (appliedFiltersKey === currentFiltersKey) {
+    if (appliedKey === desiredKey) {
       return
     }
 
-    const timeoutId = window.setTimeout(() => {
-      setAppliedFilters({
-        status: filters.status,
-        onlyMine: filters.onlyMine,
-        search: filters.search,
-      })
-    }, FILTERS_APPLY_DELAY_MS)
+    const applySequence = ++applySequenceRef.current
+    let isCancelled = false
+
+    const applyState = async () => {
+      await waitWithDelay(APPLY_DELAY_MS)
+
+      if (isCancelled || applySequenceRef.current !== applySequence) {
+        return
+      }
+
+      setAppliedState(desiredState)
+    }
+
+    void applyState()
 
     return () => {
-      window.clearTimeout(timeoutId)
+      isCancelled = true
     }
-  }, [appliedFiltersKey, currentFiltersKey, filters.onlyMine, filters.search, filters.status])
+  }, [appliedKey, desiredKey, desiredState])
 
-  const sortedRequests = sortByCreatedAtDesc(requests)
-  const statusFilteredRequests = filterByStatus(sortedRequests, appliedFilters.status)
+  const sortedByCreatedAtRequests = sortByCreatedAtDesc(requests)
+  const statusFilteredRequests = filterByStatus(sortedByCreatedAtRequests, appliedState.filters.status)
   const onlyMineFilteredRequests = filterOnlyMine(
     statusFilteredRequests,
-    appliedFilters.onlyMine,
+    appliedState.filters.onlyMine,
     currentUser?.displayName ?? null,
   )
-  const searchFilteredRequests = filterBySearch(onlyMineFilteredRequests, appliedFilters.search)
-  const groupedRequests = groupRequestsByDate(searchFilteredRequests)
+  const searchFilteredRequests = filterBySearch(onlyMineFilteredRequests, appliedState.filters.search)
+  const columnFilterOptions = buildRequestTableColumnFilterOptions(searchFilteredRequests)
+  const columnFilteredRequests = applyRequestTableColumnFilters(
+    searchFilteredRequests,
+    appliedState.columnFilters,
+  )
+  const desktopSortedRequests = sortRequests(columnFilteredRequests, appliedState.sortState)
+  const groupedRequests = groupRequestsByDate(columnFilteredRequests)
 
-  const isFiltersApplying = appliedFiltersKey !== currentFiltersKey
-  const isLoading = isRequestsLoading || (appliedFilters.onlyMine && isCurrentUserLoading)
-  const error = requestsError ?? (appliedFilters.onlyMine ? currentUserError : null)
+  const isLoading = isRequestsLoading || (appliedState.filters.onlyMine && isCurrentUserLoading)
+  const isRowsApplying = !isLoading && appliedKey !== desiredKey
+  const error = requestsError ?? (appliedState.filters.onlyMine ? currentUserError : null)
 
   const reload = useCallback(async () => {
     await Promise.all([reloadRequests(), reloadCurrentUser()])
   }, [reloadCurrentUser, reloadRequests])
 
   return {
-    requests: searchFilteredRequests,
+    requests: desktopSortedRequests,
     groupedRequests,
+    columnFilterOptions,
     isLoading,
-    isFiltersApplying,
+    isRowsApplying,
+    sortState,
+    onSortChange,
     error,
-    hasSourceData: sortedRequests.length > 0,
-    hasFilteredData: searchFilteredRequests.length > 0,
+    hasSourceData: sortedByCreatedAtRequests.length > 0,
+    hasFilteredData: columnFilteredRequests.length > 0,
     reload,
   }
 }
