@@ -184,3 +184,54 @@ export function SlaNeutralClockIcon(props: IconProps) {
     </chakra.svg>
   )
 }
+
+export function ArrowBackIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M19 11H7.83L13.41 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H19V11Z"
+        fill="currentColor"
+      />
+    </chakra.svg>
+  )
+}
+
+export function CloseSmallIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 18 18" fill="none" {...props}>
+      <path d="M4 4L14 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M14 4L4 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </chakra.svg>
+  )
+}
+
+export function UploadImageIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M5 4.5H19C20.1 4.5 21 5.4 21 6.5V17.5C21 18.6 20.1 19.5 19 19.5H5C3.9 19.5 3 18.6 3 17.5V6.5C3 5.4 3.9 4.5 5 4.5Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+      />
+      <circle cx="8.2" cy="9" r="1.6" fill="currentColor" />
+      <path
+        d="M20 16.8L15.2 12.3L11.2 16L8.8 13.7L4 18.2"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </chakra.svg>
+  )
+}
+
+export function AddIcon(props: IconProps) {
+  return (
+    <chakra.svg viewBox="0 0 24 24" fill="none" {...props}>
+      <path
+        d="M11 5C11 4.44772 11.4477 4 12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5Z"
+        fill="currentColor"
+      />
+    </chakra.svg>
+  )
+}
