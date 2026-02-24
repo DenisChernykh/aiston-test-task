@@ -1,17 +1,10 @@
 import type { CreateRequestFormOptions, RequestItem } from '@/entities/request/model'
 
 function createMockDate(daysAgo: number, hours = 12, minutes = 0, seconds = 0): string {
-  const now = new Date()
-  const date = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - daysAgo,
-    hours,
-    minutes,
-    seconds,
-    0,
-  )
-  return date.toISOString()
+  const nowMs = Date.now()
+  const offsetMs = (((daysAgo * 24 + hours) * 60 + minutes) * 60 + seconds) * 1000
+
+  return new Date(nowMs - offsetMs).toISOString()
 }
 
 export const requestsMockDb: RequestItem[] = [
@@ -21,7 +14,7 @@ export const requestsMockDb: RequestItem[] = [
     pharmacyCode: '065',
     pharmacyCity: 'Геленджик',
     pharmacyAddress: 'Островского 7',
-    createdAt: createMockDate(0, 12, 35, 45), // сегодня
+    createdAt: createMockDate(0, 0, 12, 45),
     priority: 'high',
     topic: 'Поломка кассы',
     category: 'Кассы',
@@ -39,7 +32,7 @@ export const requestsMockDb: RequestItem[] = [
     pharmacyCode: '201',
     pharmacyCity: 'Новороссийск',
     pharmacyAddress: 'Советов 31',
-    createdAt: createMockDate(1, 12, 10, 45), // вчера
+    createdAt: createMockDate(1, 12, 10, 45),
     priority: 'medium',
     topic: 'Сбой сканера штрих-кодов',
     category: 'ИТ',
@@ -57,7 +50,7 @@ export const requestsMockDb: RequestItem[] = [
     pharmacyCode: '150',
     pharmacyCity: 'Сочи',
     pharmacyAddress: 'Ленина 12',
-    createdAt: '2025-11-21T11:48:12.000Z',
+    createdAt: createMockDate(0, 0, 48, 12),
     priority: 'high',
     topic: 'Проблемы с интернетом',
     category: 'ИТ',

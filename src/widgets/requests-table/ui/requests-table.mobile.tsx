@@ -75,7 +75,12 @@ function MobileRequestCard({ item }: MobileRequestCardProps) {
         </HStack>
 
         <Box flexShrink={0}>
-          <RequestSlaCell value={item.resolutionTime} kind="resolution" status={item.status} />
+          <RequestSlaCell
+            value={item.resolutionTime}
+            kind="resolution"
+            status={item.status}
+            createdAt={item.createdAt}
+          />
         </Box>
       </HStack>
     </Box>

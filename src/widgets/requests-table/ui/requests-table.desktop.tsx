@@ -157,6 +157,7 @@ export function RequestsTableDesktop({ requests }: RequestsTableDesktopProps) {
                     value={request.reactionTime}
                     kind="reaction"
                     status={request.status}
+                    createdAt={request.createdAt}
                   />
                 </Table.Cell>
 
@@ -165,6 +166,7 @@ export function RequestsTableDesktop({ requests }: RequestsTableDesktopProps) {
                     value={request.resolutionTime}
                     kind="resolution"
                     status={request.status}
+                    createdAt={request.createdAt}
                   />
                 </Table.Cell>
 
