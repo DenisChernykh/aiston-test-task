@@ -14,8 +14,8 @@ export function RequestActionsMobileFloating({
   return (
     <VStack
       position="fixed"
-      insetX="0"
-      bottom="0"
+      inset="0"
+      h="100dvh"
       zIndex="overlay"
       pl="10"
       pr="16"

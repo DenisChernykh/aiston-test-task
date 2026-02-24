@@ -85,9 +85,12 @@ export function RequestsToolbar({
 
       <Box
         position="fixed"
-        insetX="0"
-        bottom="0"
+        inset="0"
+        h="100dvh"
         zIndex="overlay"
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-end"
         pl="10"
         pr="16"
         pb="30"
@@ -97,10 +100,10 @@ export function RequestsToolbar({
         transitionProperty="opacity, transform"
         transitionDuration="normal"
         transitionTimingFunction="easings.standard"
-        pointerEvents={mobileSearchOpen ? 'auto' : 'none'}
+        pointerEvents="none"
         bgImage="linear-gradient(180deg, transparent 76.923%, var(--chakra-colors-bg-mobile-floating) 100%)"
       >
-        <HStack align="center" gap="10">
+        <HStack align="center" gap="10" pointerEvents={mobileSearchOpen ? 'auto' : 'none'}>
           <RequestSearchField value={searchValue} onChange={onSearchChange} />
           <AppButton
             variant="softBordered"
