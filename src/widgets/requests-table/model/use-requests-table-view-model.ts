@@ -19,6 +19,7 @@ export type UseRequestsTableViewModelResult = {
   requests: RequestItem[]
   groupedRequests: RequestsDateGroup[]
   isLoading: boolean
+  isFiltersApplying: boolean
   error: string | null
   hasSourceData: boolean
   hasFilteredData: boolean
@@ -124,8 +125,7 @@ export function useRequestsTableViewModel(
   const groupedRequests = groupRequestsByDate(searchFilteredRequests)
 
   const isFiltersApplying = appliedFiltersKey !== currentFiltersKey
-  const isLoading =
-    isRequestsLoading || (appliedFilters.onlyMine && isCurrentUserLoading) || isFiltersApplying
+  const isLoading = isRequestsLoading || (appliedFilters.onlyMine && isCurrentUserLoading)
   const error = requestsError ?? (appliedFilters.onlyMine ? currentUserError : null)
 
   const reload = useCallback(async () => {
@@ -136,6 +136,7 @@ export function useRequestsTableViewModel(
     requests: searchFilteredRequests,
     groupedRequests,
     isLoading,
+    isFiltersApplying,
     error,
     hasSourceData: sortedRequests.length > 0,
     hasFilteredData: searchFilteredRequests.length > 0,

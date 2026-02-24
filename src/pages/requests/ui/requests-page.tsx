@@ -7,9 +7,15 @@ import {
 import { toaster } from '@/shared/ui/toaster'
 import { Header } from '@/widgets/header'
 import { RequestsTable } from '@/widgets/requests-table'
+import type {
+  RequestTableSortableColumn,
+  RequestTableSortState,
+} from '@/widgets/requests-table/model/request-table-sorting'
 import { RequestsToolbar } from '@/widgets/requests-toolbar'
 import { Box, VStack } from '@chakra-ui/react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+const SORT_BACKEND_DELAY_MS = 220
 
 export function RequestsPage() {
   const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
@@ -17,7 +23,18 @@ export function RequestsPage() {
   )
   const [onlyMine, setOnlyMine] = useState(false)
   const [searchValue, setSearchValue] = useState('')
+  const [sortState, setSortState] = useState<RequestTableSortState>(null)
+  const [isSortApplying, setIsSortApplying] = useState(false)
   const [visibleRequests, setVisibleRequests] = useState<RequestItem[]>([])
+  const sortTimeoutRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (sortTimeoutRef.current !== null) {
+        window.clearTimeout(sortTimeoutRef.current)
+      }
+    }
+  }, [])
 
   function resetFilters() {
     setStatusFilter(DEFAULT_REQUEST_STATUS_FILTER)
@@ -38,6 +55,33 @@ export function RequestsPage() {
       return nextRows
     })
   }, [])
+
+  const handleSortChange = useCallback((column: RequestTableSortableColumn) => {
+    const nextSortState = ((prevSortState: RequestTableSortState): NonNullable<RequestTableSortState> => {
+      if (!prevSortState || prevSortState.column !== column) {
+        return {
+          column,
+          direction: 'asc',
+        }
+      }
+
+      return {
+        column,
+        direction: prevSortState.direction === 'asc' ? 'desc' : 'asc',
+      }
+    })(sortState)
+
+    setIsSortApplying(true)
+
+    if (sortTimeoutRef.current !== null) {
+      window.clearTimeout(sortTimeoutRef.current)
+    }
+
+    sortTimeoutRef.current = window.setTimeout(() => {
+      setSortState(nextSortState)
+      setIsSortApplying(false)
+    }, SORT_BACKEND_DELAY_MS)
+  }, [sortState])
 
   const handleExportClick = useCallback(() => {
     if (visibleRequests.length === 0) {
@@ -80,6 +124,9 @@ export function RequestsPage() {
               onlyMine,
               search: searchValue,
             }}
+            sortState={sortState}
+            isSortApplying={isSortApplying}
+            onSortChange={handleSortChange}
             onResetFilters={resetFilters}
             onVisibleRequestsChange={handleVisibleRequestsChange}
           />
