@@ -17,3 +17,11 @@ export function rejectWithDelay<TError>(error: TError, delayMs = 250): Promise<n
     }, delayMs)
   })
 }
+
+export function waitWithDelay(delayMs = 250): Promise<void> {
+  return new Promise((resolve) => {
+    window.setTimeout(() => {
+      resolve()
+    }, delayMs)
+  })
+}
