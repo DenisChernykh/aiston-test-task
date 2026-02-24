@@ -19,8 +19,13 @@ export function RequestSearchField({
 
   return (
     <InputGroup
+      startOffset="-7px"
+      startElementProps={{
+        justifyContent: 'flex-start',
+        ps: '10',
+      }}
       startElement={
-        <SearchIcon w="iconLg" h="iconLg" color="text.muted" startOffset="47" flex="1" />
+        <SearchIcon w="iconLg" h="iconLg" color="text.muted" />
       }
     >
       <Input

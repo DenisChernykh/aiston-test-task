@@ -31,7 +31,7 @@ export function HeaderDesktop({ user, isLoading, onLogout }: HeaderDesktopProps)
           size="desktop"
           onClick={onLogout}
           minW="exitButtonDesktop"
-          gap="4"
+          gap="5"
           px="20"
           leftIcon={<LogoutIcon w="iconLg" h="iconLg" />}
         >

@@ -1,7 +1,6 @@
 import { RequestActionsDesktop, RequestActionsMobileFloating } from '@/features/request-actions'
 import { RequestCreateModal } from '@/features/request-create'
 import {
-  DEFAULT_REQUEST_STATUS_FILTER,
   RequestFiltersRow,
   type RequestStatusFilterValue,
 } from '@/features/request-filters'
@@ -12,15 +11,26 @@ import { useState } from 'react'
 
 const noop = () => undefined
 
-export function RequestsToolbar() {
+export type RequestsToolbarProps = {
+  searchValue: string
+  statusFilter: RequestStatusFilterValue
+  onlyMine: boolean
+  onSearchChange: (value: string) => void
+  onStatusChange: (value: RequestStatusFilterValue) => void
+  onOnlyMineChange: (value: boolean) => void
+}
+
+export function RequestsToolbar({
+  searchValue,
+  statusFilter,
+  onlyMine,
+  onSearchChange,
+  onStatusChange,
+  onOnlyMineChange,
+}: RequestsToolbarProps) {
   const isDesktop = useBreakpointValue({ base: false, md: true }) ?? false
-  const [searchValue, setSearchValue] = useState('')
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [createModalOpen, setCreateModalOpen] = useState(false)
-  const [statusFilter, setStatusFilter] = useState<RequestStatusFilterValue>(
-    DEFAULT_REQUEST_STATUS_FILTER,
-  )
-  const [onlyMine, setOnlyMine] = useState(false)
 
   function handleCreateClick() {
     setMobileSearchOpen(false)
@@ -31,16 +41,18 @@ export function RequestsToolbar() {
     return (
       <>
         <Box mt="21" px="40">
-          <HStack gap="13" align="stretch">
-            <RequestSearchField value={searchValue} onChange={setSearchValue} />
+          <HStack gap="13" align="center">
+            <Box flex="1" minW="0">
+              <RequestSearchField value={searchValue} onChange={onSearchChange} />
+            </Box>
             <RequestActionsDesktop onExportClick={noop} onCreateClick={handleCreateClick} />
           </HStack>
 
           <RequestFiltersRow
             status={statusFilter}
             onlyMine={onlyMine}
-            onStatusChange={setStatusFilter}
-            onOnlyMineChange={setOnlyMine}
+            onStatusChange={onStatusChange}
+            onOnlyMineChange={onOnlyMineChange}
           />
         </Box>
 
@@ -54,8 +66,8 @@ export function RequestsToolbar() {
       <RequestFiltersRow
         status={statusFilter}
         onlyMine={onlyMine}
-        onStatusChange={setStatusFilter}
-        onOnlyMineChange={setOnlyMine}
+        onStatusChange={onStatusChange}
+        onOnlyMineChange={onOnlyMineChange}
       />
 
       <Box
@@ -89,7 +101,7 @@ export function RequestsToolbar() {
         bgImage="linear-gradient(180deg, transparent 76.923%, var(--chakra-colors-bg-mobile-floating) 100%)"
       >
         <HStack align="center" gap="10">
-          <RequestSearchField value={searchValue} onChange={setSearchValue} />
+          <RequestSearchField value={searchValue} onChange={onSearchChange} />
           <AppButton
             variant="softBordered"
             size="floating"

@@ -16,6 +16,7 @@ export function RequestActionsDesktop({
       <AppButton
         variant="softBordered"
         size="desktopCompact"
+        w="112px"
         onClick={onExportClick}
         leftIcon={<ExportIcon boxSize="15px" />}
       >
@@ -24,6 +25,7 @@ export function RequestActionsDesktop({
       <AppButton
         variant="solidMuted"
         size="desktop"
+        w="230px"
         gap="10"
         onClick={onCreateClick}
         leftIcon={<PlusIcon w="14px" h="24px" />}

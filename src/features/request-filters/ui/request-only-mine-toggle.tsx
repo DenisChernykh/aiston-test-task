@@ -28,6 +28,8 @@ export function RequestOnlyMineToggle({ value, onChange }: RequestOnlyMineToggle
       type="button"
       variant={variant}
       size="filterToggleDesktop"
+      w="223px"
+      gap="10"
       onClick={() => onChange(!value)}
       aria-pressed={value}
       whiteSpace="nowrap"

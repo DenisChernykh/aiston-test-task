@@ -95,6 +95,7 @@ export function RequestsTableDesktop({ requests }: RequestsTableDesktopProps) {
             <Table.Row h="tableRow" bg="bg.surface">
               {COLUMNS.map((column) => (
                 <Table.ColumnHeader
+                  key={column.key}
                   px={column.key === 'number' ? '11' : '10'}
                   py="8"
                   borderBottomWidth="1px"
