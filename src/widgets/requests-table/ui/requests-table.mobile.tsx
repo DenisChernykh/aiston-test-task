@@ -139,7 +139,7 @@ function MobileRowsSkeleton() {
 
 export function RequestsTableMobile({ groups, isRowsLoading = false }: RequestsTableMobileProps) {
   return (
-    <VStack align="stretch" px="15" pb="130" gap="12" bg="bg.mobileTableList">
+    <VStack align="stretch" px="15" pb="130" gap="12" >
       {isRowsLoading ? (
         <MobileRowsSkeleton />
       ) : (
